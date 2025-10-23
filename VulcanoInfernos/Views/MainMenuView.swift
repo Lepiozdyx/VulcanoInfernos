@@ -6,22 +6,31 @@ struct MainMenuView: View {
     var body: some View {
         ZStack {
             // Background
-            Image("menu_bg")
+            Image(.menuBg)
                 .resizable()
-                .scaledToFill()
                 .ignoresSafeArea()
             
-            VStack(spacing: 20) {
+            VStack {
+                HStack {
+                    Image(.logo)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 100)
+                    Spacer()
+                }
                 Spacer()
+            }
+            .padding()
+            
+            VStack(spacing: 14) {
+                PrimaryButton(
+                    title: "Start Eruption",
+                    action: {
+                        appCoordinator.navigate(to: .levelSelect)
+                    }
+                )
                 
-                VStack(spacing: 16) {
-                    PrimaryButton(
-                        title: "Start Eruption",
-                        action: {
-                            appCoordinator.navigate(to: .levelSelect)
-                        }
-                    )
-                    
+                HStack(spacing: 16) {
                     PrimaryButton(
                         title: "Upgrades",
                         action: {
@@ -35,7 +44,9 @@ struct MainMenuView: View {
                             appCoordinator.navigate(to: .achievements)
                         }
                     )
-                    
+                }
+                
+                HStack(spacing: 12) {
                     PrimaryButton(
                         title: "Artifacts",
                         action: {
@@ -50,9 +61,6 @@ struct MainMenuView: View {
                         }
                     )
                 }
-                .padding(.horizontal, 40)
-                
-                Spacer()
             }
         }
         .onAppear {

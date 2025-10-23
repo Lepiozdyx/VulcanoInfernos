@@ -22,14 +22,13 @@ struct GameView: View {
             if let backgroundName = selectedBackground?.imageName {
                 Image(backgroundName)
                     .resizable()
-                    .scaledToFill()
                     .ignoresSafeArea()
             } else {
                 Color.black.ignoresSafeArea()
             }
             
-            VStack(spacing: 0) {
-                // Top bar: Back button + Energy display
+            // Top bar: Back button + Energy display
+            VStack {
                 HStack {
                     BackButton {
                         appCoordinator.goBack()
@@ -37,91 +36,55 @@ struct GameView: View {
                     
                     Spacer()
                     
-                    // Energy display
-                    HStack(spacing: 12) {
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text("Session")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            HStack(spacing: 4) {
-                                Image(systemName: "bolt.fill")
-                                    .foregroundStyle(.yellow)
-                                Text("\(sessionEnergy)")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(.white)
-                            }
-                        }
-                        
-                        Divider()
-                            .frame(height: 30)
-                        
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text("Total")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                            HStack(spacing: 4) {
-                                Image(systemName: "bolt.fill")
-                                    .foregroundStyle(.yellow)
-                                Text("\(appManager.totalEnergy)")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(.white)
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
+                    // Energy progress bar
+                    EnergyBar(
+                        currentEnergy: Int(sessionEnergy),
+                        maxEnergy: Int(1.0),
+                        showLabel: true
+                    )
+                    .frame(width: 180, height: 8)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
-                
                 Spacer()
-                
-                // Ring area with actual ring rendering
-                VStack {
-                    ZStack {
-                        // All 5 rings rendered from largest to smallest
-                        if !rings.isEmpty {
-                            ForEach(rings) { ring in
-                                RingView(ring: ring)
-                            }
-                            
-                            // Red alignment marker at 12 o'clock (top)
-                            VStack {
-                                Rectangle()
-                                    .fill(.red)
-                                    .frame(width: 4, height: 30)
-                                Spacer()
-                            }
-                        } else {
-                            // Placeholder while rings load
-                            Circle()
-                                .stroke(Color.orange.opacity(0.3), lineWidth: 2)
-                                .frame(height: 200)
-                            
-                            VStack(spacing: 12) {
-                                Image(systemName: "rings")
-                                    .font(.system(size: 40))
-                                    .foregroundStyle(.orange)
-                                
-                                Text("Level \(levelId)")
-                                    .font(.system(size: 24, weight: .bold))
-                                    .foregroundStyle(.white)
-                                
-                                Text("Loading rings...")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            }
-                        }
+            }
+            .padding()
+            
+            // Ring area with actual ring rendering
+            ZStack {
+                // All 5 rings rendered from largest to smallest
+                if !rings.isEmpty {
+                    ForEach(rings) { ring in
+                        RingView(ring: ring)
+                    }
+                } else {
+                    // Placeholder while rings load
+                    Circle()
+                        .stroke(Color.orange.opacity(0.3), lineWidth: 2)
+                        .frame(height: 200)
+                    
+                    VStack(spacing: 12) {
+                        Image(systemName: "rings")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.orange)
+                        
+                        Text("Level \(levelId)")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(.white)
+                        
+                        Text("Loading rings...")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
                     }
                 }
-                .frame(maxHeight: 250)
-                
+            }
+            .frame(maxHeight: 300)
+            
+            // Spin button
+            VStack {
                 Spacer()
-                
-                // Spin button
-                VStack(spacing: 20) {
+                HStack {
+                    Spacer()
                     PrimaryButton(
-                        title: isSpinning ? "SPINNING..." : "SPIN",
+                        title: isSpinning ? "WAIT..." : "SPIN",
                         action: {
                             if !isSpinning {
                                 spinRings()
@@ -129,9 +92,8 @@ struct GameView: View {
                         }
                     )
                     .disabled(isSpinning)
-                    .opacity(isSpinning ? 0.6 : 1.0)
+                    .opacity(isSpinning ? 0.7 : 1.0)
                 }
-                .padding(.bottom, 30)
             }
             
             // Win overlay

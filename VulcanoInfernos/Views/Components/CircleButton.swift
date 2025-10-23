@@ -13,7 +13,7 @@ struct CircleButton<Content: View>: View {
     }
     
     var body: some View {
-        Button(action: {
+        Button {
             guard isEnabled else { return }
             withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                 isPressed = true
@@ -24,28 +24,16 @@ struct CircleButton<Content: View>: View {
                     isPressed = false
                 }
             }
-        }) {
+        } label: {
             content()
                 .frame(maxWidth: .infinity)
-                .frame(height: 80)
+                .frame(height: 50)
                 .background(
-                    Circle()
-                        .fill(
-                            isEnabled ?
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color(red: 0.9, green: 0.3, blue: 0.0), Color(red: 0.7, green: 0.15, blue: 0.0)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ) :
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.gray.opacity(0.3), Color.gray.opacity(0.2)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .shadow(color: isEnabled ? Color(red: 1.0, green: 0.4, blue: 0.1).opacity(0.5) : Color.clear, radius: 6, x: 0, y: 3)
+                    Image(.circleButton)
+                        .resizable()
+                        .scaledToFit()
                 )
-                .scaleEffect(isPressed && isEnabled ? 0.92 : 1.0)
+                .scaleEffect(isPressed && isEnabled ? 0.9 : 1.0)
                 .opacity(isEnabled ? 1.0 : 0.5)
         }
         .disabled(!isEnabled)
@@ -64,12 +52,5 @@ struct CircleButton<Content: View>: View {
                 .font(.system(size: 16))
                 .foregroundStyle(.gray)
         }, isEnabled: false) {}
-        CircleButton(content: {
-            Text("3")
-                .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(.white)
-        }, isEnabled: true) {}
     }
-    .padding()
-    .background(Color.black)
 }

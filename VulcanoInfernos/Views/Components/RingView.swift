@@ -4,7 +4,7 @@ struct RingView: View {
     let ring: Ring
     
     var body: some View {
-        Image("ring")
+        Image(.ring)
             .resizable()
             .scaledToFit()
             .scaleEffect(ring.scale)
@@ -25,6 +25,6 @@ struct RingView: View {
     )
     
     return RingView(ring: previewRing)
-        .frame(height: 300)
+        .frame(height: 250)
 }
 

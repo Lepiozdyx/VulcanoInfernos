@@ -33,8 +33,8 @@ struct ToggleRow: View {
             .background(Color.gray.opacity(0.3))
         ToggleRow(label: "Music", systemIcon: "music.note", isOn: .constant(false))
     }
-    .background(Color(red: 0.1, green: 0.1, blue: 0.1))
+    .background(.gray)
     .cornerRadius(12)
     .padding()
-    .background(Color.black)
+
 }

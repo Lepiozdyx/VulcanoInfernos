@@ -5,7 +5,7 @@ struct LevelSelectView: View {
     @EnvironmentObject var appManager: AppManager
     @State private var shakeId: UUID = UUID()
     
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 5)
+    let columns = Array(repeating: GridItem(.flexible()), count: 5)
     
     var nextLevelProgress: Double {
         let currentEnergy = appManager.totalEnergy
@@ -25,10 +25,12 @@ struct LevelSelectView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Image(.menuBg)
+                .resizable()
+                .ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                // Top bar: Back button + Energy display
+            // Top bar: Back button + Energy display
+            VStack {
                 HStack {
                     BackButton {
                         appCoordinator.goBack()
@@ -36,70 +38,69 @@ struct LevelSelectView: View {
                     
                     Spacer()
                     
-                    // Energy display
-                    HStack(spacing: 8) {
-                        Image(systemName: "bolt.fill")
-                            .foregroundStyle(.yellow)
-                            .font(.system(size: 16))
-                        
-                        Text("\(appManager.totalEnergy)")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(.white)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
-                
-                // Energy progress bar
-                VStack(spacing: 4) {
-                    Text("Progress to next level")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                    
+                    // Energy progress bar
                     EnergyBar(
                         currentEnergy: Int(nextLevelProgress),
                         maxEnergy: Int(1.0),
-                        showLabel: false
+                        showLabel: true
                     )
-                    .frame(height: 8)
+                    .frame(width: 200, height: 8)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 20)
+                
+                Spacer()
+            }
+            .padding()
+            
+            VStack {
+                Spacer()
                 
                 // Level grid
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(appManager.levels) { level in
-                            CircleButton(
-                                content: {
-                                    if level.isUnlocked {
-                                        Text("\(level.id)")
-                                            .font(.system(size: 18, weight: .bold))
-                                            .foregroundStyle(.white)
-                                    } else {
-                                        Image(systemName: "lock.fill")
-                                            .font(.system(size: 16))
-                                            .foregroundStyle(.gray)
-                                    }
-                                },
-                                isEnabled: level.isUnlocked,
-                                action: {
-                                    if level.isUnlocked {
-                                        appManager.setCurrentLevel(level.id)
-                                        appCoordinator.navigate(to: .game(levelId: level.id))
-                                    } else {
-                                        shakeId = UUID()
-                                    }
-                                }
-                            )
-                            .shake(id: shakeId, enabled: !level.isUnlocked)
-                        }
+                Image(.sFrame)
+                    .resizable()
+                    .overlay(alignment: .top) {
+                        Image(.button)
+                            .resizable()
+                            .frame(width: 250, height: 60)
+                            .overlay {
+                                Text("Level Select")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
+                            .offset(y: -35)
                     }
-                    .padding(20)
-                }
+                    .overlay {
+                        LazyVGrid(columns: columns, spacing: 8) {
+                            ForEach(appManager.levels) { level in
+                                CircleButton(
+                                    content: {
+                                        if level.isUnlocked {
+                                            Text("\(level.id)")
+                                                .font(.system(size: 18, weight: .bold))
+                                                .foregroundStyle(.white)
+                                        } else {
+                                            Image(systemName: "lock.fill")
+                                                .font(.system(size: 16))
+                                                .foregroundStyle(.gray)
+                                        }
+                                    },
+                                    isEnabled: level.isUnlocked,
+                                    action: {
+                                        if level.isUnlocked {
+                                            appManager.setCurrentLevel(level.id)
+                                            appCoordinator.navigate(to: .game(levelId: level.id))
+                                        } else {
+                                            shakeId = UUID()
+                                        }
+                                    }
+                                )
+                                .shake(id: shakeId, enabled: !level.isUnlocked)
+                            }
+                        }
+                        .padding(30)
+                    }
+                    .frame(width: 350, height: 280)
             }
+            .padding(.bottom)
         }
     }
 }

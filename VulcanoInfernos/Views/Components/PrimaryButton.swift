@@ -6,7 +6,7 @@ struct PrimaryButton: View {
     @State private var isPressed = false
     
     var body: some View {
-        Button(action: {
+        Button {
             withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                 isPressed = true
             }
@@ -16,22 +16,16 @@ struct PrimaryButton: View {
                     isPressed = false
                 }
             }
-        }) {
-            Text(title)
-                .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color(red: 1.0, green: 0.4, blue: 0.1), Color(red: 0.8, green: 0.2, blue: 0.0)]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .clipShape(Capsule())
-                .shadow(color: Color(red: 1.0, green: 0.4, blue: 0.1).opacity(0.6), radius: 8, x: 0, y: 4)
-                .scaleEffect(isPressed ? 0.95 : 1.0)
+        } label: {
+            Image(.button)
+                .resizable()
+                .frame(width: 200, height: 70)
+                .scaleEffect(isPressed ? 0.9 : 1.0)
+                .overlay {
+                    Text(title)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.white)
+                }
         }
     }
 }
@@ -42,5 +36,4 @@ struct PrimaryButton: View {
         PrimaryButton(title: "Continue") {}
     }
     .padding()
-    .background(Color.black)
 }
