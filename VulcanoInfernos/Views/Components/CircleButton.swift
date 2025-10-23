@@ -1,10 +1,16 @@
 import SwiftUI
 
-struct CircleButton: View {
-    let content: String
+struct CircleButton<Content: View>: View {
+    let content: () -> Content
     let isEnabled: Bool
     let action: () -> Void
     @State private var isPressed = false
+    
+    init(@ViewBuilder content: @escaping () -> Content, isEnabled: Bool, action: @escaping () -> Void) {
+        self.content = content
+        self.isEnabled = isEnabled
+        self.action = action
+    }
     
     var body: some View {
         Button(action: {
@@ -19,9 +25,7 @@ struct CircleButton: View {
                 }
             }
         }) {
-            Text(content)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(isEnabled ? .white : .gray)
+            content()
                 .frame(maxWidth: .infinity)
                 .frame(height: 80)
                 .background(
@@ -50,9 +54,21 @@ struct CircleButton: View {
 
 #Preview {
     HStack(spacing: 12) {
-        CircleButton(content: "1", isEnabled: true) {}
-        CircleButton(content: "2", isEnabled: false) {}
-        CircleButton(content: "3", isEnabled: true) {}
+        CircleButton(content: {
+            Text("1")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(.white)
+        }, isEnabled: true) {}
+        CircleButton(content: {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 16))
+                .foregroundStyle(.gray)
+        }, isEnabled: false) {}
+        CircleButton(content: {
+            Text("3")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(.white)
+        }, isEnabled: true) {}
     }
     .padding()
     .background(Color.black)
