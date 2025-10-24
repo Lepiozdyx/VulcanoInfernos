@@ -98,48 +98,27 @@ struct GameView: View {
             
             // Win overlay
             if showWinOverlay && matchCount >= 2 {
-                ZStack {
-                    Color.black.opacity(0.4)
-                        .ignoresSafeArea()
-                    
-                    VStack(spacing: 16) {
-                        Text("🎉 MATCH! 🎉")
-                            .font(.system(size: 32, weight: .bold))
+                VStack(spacing: 16) {
+                    Text("MATCH!")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundStyle(.yellow)
+
+                    HStack {
+                        Text("+\(earnedEnergy)")
+                            .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(.yellow)
                         
-                        Text("\(matchCount) Rings Aligned")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(.white)
-                        
-                        Text("+\(earnedEnergy) Energy")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.orange)
-                        
-                        Divider()
-                            .padding(.vertical, 8)
-                        
-                        // Next unlock info
-                        if let nextUnlock = getNextUnlockInfo() {
-                            VStack(spacing: 4) {
-                                Text("Next Level: \(nextUnlock.levelNumber)")
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundStyle(.gray)
-                                
-                                HStack(spacing: 8) {
-                                    Image(systemName: "lock.open.fill")
-                                        .foregroundStyle(.green)
-                                    
-                                    Text("\(nextUnlock.energyNeeded) energy needed")
-                                        .font(.system(size: 13, weight: .semibold))
-                                        .foregroundStyle(.white)
-                                }
-                            }
-                        }
+                        Image(systemName: "bolt.fill")
+                            .resizable()
+                            .frame(width: 20, height: 25)
+                            .foregroundStyle(.yellow)
                     }
-                    .padding(24)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(16)
                 }
+                .padding()
+                .background(
+                    Image(.xsFrame)
+                        .resizable()
+                )
             }
         }
         .onAppear {
@@ -199,24 +178,11 @@ struct GameView: View {
             // Show win overlay
             showWinOverlay = true
             
-            // Auto-dismiss after 1.5 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            // Auto-dismiss after 2 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 showWinOverlay = false
             }
         }
-    }
-    
-    private func getNextUnlockInfo() -> (levelNumber: Int, energyNeeded: Int)? {
-        let currentLevel = appManager.currentLevel
-        let nextLevel = currentLevel + 1
-        
-        // Get the energy requirement for the next level from AppManager
-        if let nextLevelModel = appManager.levels.first(where: { $0.id == nextLevel }) {
-            let energyNeeded = nextLevelModel.energyRequired
-            return (levelNumber: nextLevel, energyNeeded: energyNeeded)
-        }
-        
-        return nil
     }
 }
 
