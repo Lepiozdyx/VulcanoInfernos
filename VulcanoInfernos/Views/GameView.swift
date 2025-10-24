@@ -16,9 +16,25 @@ struct GameView: View {
         appManager.backgrounds.first { $0.id == appManager.selectedBackgroundId }
     }
     
+    var energyBarValues: (current: Int, max: Int) {
+        let totalEnergy = appManager.totalEnergy
+        let unlockedCount = appManager.levels.filter { $0.isUnlocked }.count
+        let nextLevelIndex = min(unlockedCount, appManager.levels.count - 1)
+        let nextLevelRequired = appManager.levels[nextLevelIndex].energyRequired
+        
+        if nextLevelIndex == appManager.levels.count - 1 && appManager.levels[nextLevelIndex].isUnlocked {
+            return (nextLevelRequired, nextLevelRequired)
+        }
+        
+        let currentRequired = nextLevelIndex > 0 ? appManager.levels[nextLevelIndex - 1].energyRequired : 0
+        let range = nextLevelRequired - currentRequired
+        let progress = totalEnergy - currentRequired
+        
+        return (progress, range)
+    }
+    
     var body: some View {
         ZStack {
-            // Background
             if let backgroundName = selectedBackground?.imageName {
                 Image(backgroundName)
                     .resizable()
@@ -27,7 +43,6 @@ struct GameView: View {
                 Color.black.ignoresSafeArea()
             }
             
-            // Top bar: Back button + Energy display
             VStack {
                 HStack {
                     BackButton {
@@ -36,27 +51,23 @@ struct GameView: View {
                     
                     Spacer()
                     
-                    // Energy progress bar
                     EnergyBar(
-                        currentEnergy: Int(sessionEnergy),
-                        maxEnergy: Int(1.0),
+                        currentEnergy: energyBarValues.current,
+                        maxEnergy: energyBarValues.max,
                         showLabel: true
                     )
-                    .frame(width: 180, height: 8)
+                    .frame(width: 180)
                 }
                 Spacer()
             }
             .padding()
             
-            // Ring area with actual ring rendering
             ZStack {
-                // All 5 rings rendered from largest to smallest
                 if !rings.isEmpty {
                     ForEach(rings) { ring in
                         RingView(ring: ring)
                     }
                 } else {
-                    // Placeholder while rings load
                     Circle()
                         .stroke(Color.orange.opacity(0.3), lineWidth: 2)
                         .frame(height: 200)
@@ -78,7 +89,6 @@ struct GameView: View {
             }
             .frame(maxHeight: 300)
             
-            // Spin button
             VStack {
                 Spacer()
                 HStack {
@@ -96,7 +106,6 @@ struct GameView: View {
                 }
             }
             
-            // Win overlay
             if showWinOverlay && matchCount >= 2 {
                 VStack(spacing: 16) {
                     Text("MATCH!")
@@ -126,19 +135,14 @@ struct GameView: View {
         }
     }
     
-    // MARK: - Ring Initialization
-    
     private func initializeRings() {
         rings = GameLogic.initializeRings()
     }
-    
-    // MARK: - Spin Logic with Animation
     
     private func spinRings() {
         isSpinning = true
         var animationTasks: [Task<Void, Never>] = []
         
-        // Animate each ring with different duration and direction
         for (index, _) in rings.enumerated() {
             let task = Task {
                 let ring = rings[index]
@@ -154,7 +158,6 @@ struct GameView: View {
             animationTasks.append(task)
         }
         
-        // Wait for all animations to complete
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
             detectAndAwardEnergy()
             isSpinning = false
@@ -162,23 +165,18 @@ struct GameView: View {
     }
     
     private func detectAndAwardEnergy() {
-        // Detect matches
         let detected = GameLogic.detectMatches(rings: rings)
         matchCount = detected
         
-        // Calculate energy
         let earned = GameLogic.calculateEnergy(matchCount: detected)
         earnedEnergy = earned
         
-        // Award energy if match found
         if earned > 0 {
             sessionEnergy += earned
             appManager.addEnergy(earned)
             
-            // Show win overlay
             showWinOverlay = true
             
-            // Auto-dismiss after 2 seconds
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 showWinOverlay = false
             }

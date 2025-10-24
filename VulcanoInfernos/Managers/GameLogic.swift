@@ -14,10 +14,10 @@ class GameLogic {
     static func initializeRings() -> [Ring] {
         let configs = [
             (id: 1, scale: 1.0, minRot: 30, maxRot: 90, duration: 1.2, direction: 1),
-            (id: 2, scale: 0.85, minRot: 90, maxRot: 180, duration: 1.4, direction: -1),
-            (id: 3, scale: 0.7, minRot: 180, maxRot: 360, duration: 1.6, direction: 1),
-            (id: 4, scale: 0.55, minRot: 360, maxRot: 720, duration: 1.8, direction: -1),
-            (id: 5, scale: 0.4, minRot: 720, maxRot: 1440, duration: 2.0, direction: 1)
+            (id: 2, scale: 0.80, minRot: 90, maxRot: 180, duration: 1.4, direction: -1),
+            (id: 3, scale: 0.64, minRot: 180, maxRot: 360, duration: 1.6, direction: 1),
+            (id: 4, scale: 0.51, minRot: 360, maxRot: 720, duration: 1.8, direction: -1),
+            (id: 5, scale: 0.41, minRot: 720, maxRot: 1440, duration: 2.0, direction: 1)
         ]
         
         return configs.map { config in
@@ -86,4 +86,3 @@ class GameLogic {
         }
     }
 }
-
