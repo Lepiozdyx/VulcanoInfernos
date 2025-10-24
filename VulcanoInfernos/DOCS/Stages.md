@@ -271,22 +271,21 @@
 ## STAGE 12: Upgrades Screen
 **Goal:** Build background shop with selection
 
-- [ ] Create `UpgradesView.swift`
-- [ ] Add @EnvironmentObject for AppManager
-- [ ] Add BackButton → .mainMenu
-- [ ] Add title "Upgrades"
-- [ ] Create ScrollView with HStack:
-  - [ ] ForEach backgrounds
-  - [ ] CardView for each background:
-    - [ ] Preview image
-    - [ ] Background name/number
-    - [ ] Status button:
-      - [ ] "Selected" (green) if selected
-      - [ ] "Select" (blue) if unlocked
-      - [ ] "Locked" (gray) if locked
-- [ ] Implement tap action:
-  - [ ] If unlocked → call `appManager.selectBackground(id)`
-- [ ] Test: Verify background selection persists
+- [x] Create `UpgradesView.swift`
+- [x] Add @EnvironmentObject for AppManager
+- [x] Add BackButton → .mainMenu
+- [x] Add title "Upgrades"
+- [x] Create HStack:
+  - [x] ForEach backgrounds
+  - [x] CardView for each background:
+    - [x] Preview image
+    - [x] Background name/number
+    - [x] Status button:
+      - [x] "Selected" (green) if selected
+      - [x] "Select" (blue) if unlocked
+      - [x] "Locked" (gray) if locked
+- [x] Implement tap action:
+  - [x] If unlocked → call `appManager.selectBackground(id)`
 
 ---
 
@@ -298,14 +297,13 @@
 - [ ] Add BackButton → .mainMenu
 - [ ] Add title "Achievements"
 - [ ] Add energy display (top-right)
-- [ ] Create VStack or LazyVGrid:
+- [ ] Create HStack:
   - [ ] ForEach achievements
   - [ ] CardView for each:
     - [ ] Icon (Circle with SF Symbol placeholder)
     - [ ] Title (bold)
     - [ ] Description
     - [ ] Status: "Collected" or progress text
-- [ ] Test: Verify achievements update when unlocked
 
 ---
 
@@ -317,7 +315,7 @@
 - [ ] Add BackButton → .mainMenu
 - [ ] Add title "Artifacts"
 - [ ] Add energy display + bar (top-right)
-- [ ] Create LazyVGrid (2 columns x 5 rows):
+- [ ] Create LazyVGrid (5 columns x 2 rows):
   - [ ] ForEach artifacts
   - [ ] CardView for each:
     - [ ] Artifact image (placeholder)
@@ -332,9 +330,8 @@
     - [ ] Large artifact image
     - [ ] Artifact name
     - [ ] Legend text
-    - [ ] Close button (X)
+    - [ ] Add tap to close action
 - [ ] Show overlay when selectedArtifact != nil
-- [ ] Test: Verify lore displays and closes
 
 ---
 
@@ -350,8 +347,7 @@
 - [ ] Create CardView with:
   - [ ] ToggleRow "Sounds" → soundEnabled
   - [ ] ToggleRow "Music" → musicEnabled
-  - [ ] Divider
-  - [ ] "Reset Progress" button (red)
+  - [ ] "Reset Progress" button with confirmation
 - [ ] Add @State for showResetAlert: Bool
 - [ ] Implement alert:
   - [ ] Title: "Reset Progress?"
@@ -380,8 +376,8 @@
   - [ ] background_music.mp3
   - [ ] button_click.wav
   - [ ] spin_sound.wav
-  - [ ] win_small.wav
-  - [ ] win_big.wav
+  - [ ] win_sound.wav
+  - [ ] miss_sound.wav
 - [ ] Integrate with AppManager:
   - [ ] Pass AudioManager as @EnvironmentObject
 - [ ] Add lifecycle observers:
@@ -391,7 +387,6 @@
 - [ ] Add button sounds to all buttons
 - [ ] Add spin sound in `spinRings()`
 - [ ] Add win sounds based on match count
-- [ ] Test: Verify music loops and sounds play
 
 ---
 
@@ -402,26 +397,10 @@
   - [ ] Button taps
   - [ ] Spin complete
   - [ ] Win matches
-- [ ] Add particle effects:
-  - [ ] Energy bar fill sparkles
-  - [ ] Jackpot (5 match) celebration
 - [ ] Fine-tune animation timings:
   - [ ] Button scale animations
   - [ ] Screen transitions
   - [ ] Energy bar fill speed
-- [ ] Add loading states:
-  - [ ] Level select grid
-  - [ ] Artifact images
-- [ ] Add error handling:
-  - [ ] Audio file not found
-  - [ ] UserDefaults read/write failures
-- [ ] Test all navigation flows:
-  - [ ] Forward and back navigation
-  - [ ] Deep navigation (MainMenu → LevelSelect → Game → back)
-- [ ] Test on multiple iPhone sizes:
-  - [ ] iPhone SE
-  - [ ] iPhone 14 Pro
-  - [ ] iPhone 14 Pro Max
 
 ---
 
@@ -455,29 +434,6 @@
 
 ---
 
-## STAGE 19: Final Optimization
-**Goal:** Optimize performance and prepare for release
-
-- [ ] Optimize ring rendering:
-  - [ ] Verify single PNG is cached properly
-  - [ ] Check for unnecessary view redraws
-- [ ] Optimize UserDefaults:
-  - [ ] Batch saves
-  - [ ] Debounce frequent updates
-- [ ] Add accessibility:
-  - [ ] VoiceOver labels
-  - [ ] Dynamic type support (if needed)
-- [ ] Clean up project:
-  - [ ] Remove debug prints
-  - [ ] Remove unused assets
-  - [ ] Organize file structure
-- [ ] Add app icon and launch screen placeholders
-- [ ] Verify landscape-only orientation on all screens
-- [ ] Final build and archive test
-- [ ] Document any known issues or limitations
-
----
-
 ## COMPLETION CHECKLIST
 
 ### Core Features
@@ -502,8 +458,7 @@
 ### Polish
 - [ ] All animations are smooth
 - [ ] No crashes or major bugs
-- [ ] Tested on multiple device sizes
-- [ ] Code is clean and documented
+- [ ] Code is clean
 
 ---
 

@@ -15,8 +15,7 @@ struct ContentView: View {
             case .game(let levelId):
                 GameView(levelId: levelId)
             case .upgrades:
-                Text("Upgrades Screen")
-                    .foregroundStyle(.white)
+                UpgradesView()
             case .achievements:
                 Text("Achievements Screen")
                     .foregroundStyle(.white)

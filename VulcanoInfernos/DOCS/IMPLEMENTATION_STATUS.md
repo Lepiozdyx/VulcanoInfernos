@@ -23,6 +23,7 @@ VulcanoInfernos/
 │   ├── MainMenuView.swift ✅ (5 navigation buttons)
 │   ├── LevelSelectView.swift ✅ (5x4 grid, energy display)
 │   ├── GameView.swift ✅ (Game screen with ring rendering & rotation ready)
+│   ├── UpgradesView.swift ✅ (Background selection & shop)
 │   └── Components/
 │       ├── PrimaryButton.swift ✅ (Capsule button with animation)
 │       ├── CircleButton.swift ✅ (Circle button for levels/artifacts)
@@ -210,22 +211,56 @@ VulcanoInfernos/
 
 ---
 
-## 📋 NEXT STEPS - STAGE 12
+## ✅ STAGE 12: Upgrades Screen
 
-**STAGE 12**: Upgrades Screen [NEXT]
-- Create UpgradesView.swift with background selection
-- ScrollView with background cards
-- Selection persistence with AppManager
-- Visual feedback for selected background
+**Status:** COMPLETED ✅
+
+- [x] Create UpgradesView.swift with horizontal scrolling background cards
+- [x] Add @EnvironmentObject for AppManager and AppCoordinator
+- [x] Add BackButton → .mainMenu for navigation
+- [x] Create title "Upgrades" with matching frame design
+- [x] Implement ScrollView with 4 background cards:
+  - [x] BackgroundCard component with image preview
+  - [x] Background name/number display
+  - [x] Dynamic status button ("Selected" / "Select" / "Locked")
+  - [x] Color-coded button states (green/blue/gray)
+- [x] Implement tap action to select unlocked backgrounds
+- [x] Visual feedback with gold border for selected background
+- [x] Proper opacity and styling for locked backgrounds
+- [x] Integrate into ContentView navigation
+
+**Features Added:**
+- Horizontal scrollable background shop with 4 backgrounds
+- Color-coded button states (green selected, blue unlocked, gray locked)
+- Selection persistence via AppManager.selectBackground()
+- Visual feedback with dynamic gold border highlighting
+- Proper opacity and disabled states for locked backgrounds
+- Responsive card design with proper spacing and alignment
+
+**Files Created:**
+- UpgradesView.swift (main view + BackgroundCard component)
+
+**Files Modified:**
+- ContentView.swift (integrated UpgradesView)
+
+---
+
+## 📋 NEXT STEPS - STAGE 13
+
+**STAGE 13**: Achievements Screen [NEXT]
+- Create AchievementsView.swift with 5 achievement cards
+- Progress display for incomplete achievements
+- Energy counter display
+- Locked/completed states with visual feedback
 
 ---
 
 ## 📊 Summary
 
-**Stages Completed**: 1-11 ✅  
-**Files Modified This Session**: 1 (GameView.swift - rotation animation & match detection)
-**Total Views/Screens**: 4 implemented + 3 placeholder screens remaining
-**Status**: Core game mechanics complete! Ready for STAGE 12 (Upgrades Screen)
+**Stages Completed**: 1-12 ✅  
+**Files Modified This Session**: 2 (UpgradesView.swift - new, ContentView.swift - integration)
+**Total Views/Screens**: 5 implemented + 2 placeholder screens remaining
+**Status**: Background shop complete! Ready for STAGE 13 (Achievements Screen)
 **No Errors**: ✅ All files compile without linter errors
 
 ---
@@ -241,6 +276,8 @@ VulcanoInfernos/
 - ✅ Ring initialization with random angles
 - ✅ All 5 rings render correctly with proper scaling
 - ✅ Navigation between screens
+- ✅ Background selection and persistence
+- ✅ Upgrades shop with visual feedback
 
 **Game Mechanics Verified:**
 - Ring rotation with alternating directions (CW/CCW)
@@ -254,13 +291,7 @@ VulcanoInfernos/
 
 ## 📋 REMAINING STAGES (For Next Session)
 
-**STAGE 12**: Upgrades Screen (Backgrounds Shop)
-- Create UpgradesView.swift
-- Horizontal scrollable background cards
-- Selection with "Selected/Select/Locked" buttons
-- Visual feedback
-
-**STAGE 13**: Achievements Screen
+**STAGE 13**: Achievements Screen [NEXT]
 - Display 5 achievements with progress
 - Locked/completed states
 - Energy display
@@ -274,8 +305,8 @@ VulcanoInfernos/
 - Sound/Music toggles
 - Reset Progress button with confirmation
 
-**STAGE 16-19**: Audio, Polish, Testing & Optimization
+**STAGE 16-18**: Audio, Polish, Testing & Optimization
 
 ---
 
-**Last Updated:** STAGE 11 complete - Rotation Animation & Match Detection fully functional
+**Last Updated:** STAGE 12 complete - Upgrades Screen (Background Shop) fully functional with selection persistence

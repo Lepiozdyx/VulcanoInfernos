@@ -158,7 +158,7 @@ struct GameView: View {
                                 .shadow(color: .orange, radius: 10)
                         }
                     }
-                    .rotationEffect(Angle(degrees: -30))
+                    .rotationEffect(Angle(degrees: -25))
                     .scaleEffect(showWinOverlay ? 1.0 : 0.5)
                     .opacity(showWinOverlay ? 1.0 : 0.0)
                     
@@ -178,7 +178,7 @@ struct GameView: View {
                         .scaleEffect(showMissOverlay ? 1.0 : 0.5)
                         .opacity(showMissOverlay ? 1.0 : 0.0)
                         .offset(y: showMissOverlay ? 0 : 30)
-                        .rotationEffect(Angle(degrees: 30))
+                        .rotationEffect(Angle(degrees: 25))
                 }
                 .padding(.horizontal, 40)
             }
