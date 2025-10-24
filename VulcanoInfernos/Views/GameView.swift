@@ -8,6 +8,7 @@ struct GameView: View {
     @State private var sessionEnergy = 0
     @State private var matchCount = 0
     @State private var showWinOverlay = false
+    @State private var showMissOverlay = false
     @State private var earnedEnergy = 0
     
     let levelId: Int
@@ -140,27 +141,50 @@ struct GameView: View {
                 HStack {
                     VStack(spacing: 16) {
                         Text("MATCH!")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: 28, weight: .bold))
                             .foregroundStyle(.yellow)
+                            .shadow(color: .orange, radius: 10)
 
                         HStack {
                             Text("+\(earnedEnergy)")
-                                .font(.system(size: 24, weight: .bold))
+                                .font(.system(size: 28, weight: .bold))
                                 .foregroundStyle(.yellow)
+                                .shadow(color: .orange, radius: 10)
                             
                             Image(systemName: "bolt.fill")
                                 .resizable()
-                                .frame(width: 20, height: 25)
+                                .frame(width: 24, height: 30)
                                 .foregroundStyle(.yellow)
+                                .shadow(color: .orange, radius: 10)
                         }
                     }
                     .rotationEffect(Angle(degrees: -30))
+                    .scaleEffect(showWinOverlay ? 1.0 : 0.5)
+                    .opacity(showWinOverlay ? 1.0 : 0.0)
                     
                     Spacer()
                 }
-                .padding(.horizontal, 30)
+                .padding(.horizontal, 40)
+            }
+            
+            if showMissOverlay {
+                HStack {
+                    Spacer()
+                    
+                    Text("MISS")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundStyle(.red)
+                        .shadow(color: .red.opacity(0.5), radius: 8)
+                        .scaleEffect(showMissOverlay ? 1.0 : 0.5)
+                        .opacity(showMissOverlay ? 1.0 : 0.0)
+                        .offset(y: showMissOverlay ? 0 : 30)
+                        .rotationEffect(Angle(degrees: 30))
+                }
+                .padding(.horizontal, 40)
             }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.6), value: showWinOverlay)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: showMissOverlay)
         .onAppear {
             initializeRings()
         }
@@ -210,6 +234,12 @@ struct GameView: View {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 showWinOverlay = false
+            }
+        } else {
+            showMissOverlay = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                showMissOverlay = false
             }
         }
     }
