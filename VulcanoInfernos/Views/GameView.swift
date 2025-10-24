@@ -33,12 +33,42 @@ struct GameView: View {
         return (progress, range)
     }
     
+    var currentStage: Int {
+        let progress = Double(energyBarValues.current) / Double(max(energyBarValues.max, 1))
+        if progress < 0.33 {
+            return 1
+        } else if progress < 0.67 {
+            return 2
+        } else {
+            return 3
+        }
+    }
+    
     var body: some View {
         ZStack {
             if let backgroundName = selectedBackground?.imageName {
                 Image(backgroundName)
                     .resizable()
                     .ignoresSafeArea()
+                
+                VStack(spacing: -10) {
+                    Spacer()
+                    
+                    Image("stage\(currentStage)")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 120)
+                        .zIndex(1)
+                        .offset(x: 20)
+                        .animation(.easeInOut(duration: 0.5), value: currentStage)
+                    
+                    Image(.vulcan)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 170)
+                }
+                .padding(.bottom)
+
             } else {
                 Color.black.ignoresSafeArea()
             }
@@ -65,7 +95,7 @@ struct GameView: View {
             ZStack {
                 if !rings.isEmpty {
                     ForEach(rings) { ring in
-                        RingView(ring: ring)
+                        RingView(ring: ring).opacity(0.8)
                     }
                 } else {
                     Circle()
@@ -107,27 +137,28 @@ struct GameView: View {
             }
             
             if showWinOverlay && matchCount >= 2 {
-                VStack(spacing: 16) {
-                    Text("MATCH!")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(.yellow)
-
-                    HStack {
-                        Text("+\(earnedEnergy)")
+                HStack {
+                    VStack(spacing: 16) {
+                        Text("MATCH!")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(.yellow)
-                        
-                        Image(systemName: "bolt.fill")
-                            .resizable()
-                            .frame(width: 20, height: 25)
-                            .foregroundStyle(.yellow)
+
+                        HStack {
+                            Text("+\(earnedEnergy)")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundStyle(.yellow)
+                            
+                            Image(systemName: "bolt.fill")
+                                .resizable()
+                                .frame(width: 20, height: 25)
+                                .foregroundStyle(.yellow)
+                        }
                     }
+                    .rotationEffect(Angle(degrees: -30))
+                    
+                    Spacer()
                 }
-                .padding()
-                .background(
-                    Image(.xsFrame)
-                        .resizable()
-                )
+                .padding(.horizontal, 30)
             }
         }
         .onAppear {
