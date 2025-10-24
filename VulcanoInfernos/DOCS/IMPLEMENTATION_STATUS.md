@@ -245,27 +245,70 @@ VulcanoInfernos/
 
 ---
 
-## 📋 NEXT STEPS - STAGE 13
+## ✅ STAGE 13: Achievements Screen
 
-**STAGE 13**: Achievements Screen [NEXT]
-- Create AchievementsView.swift with 5 achievement cards
-- Progress display for incomplete achievements
-- Energy counter display
-- Locked/completed states with visual feedback
+**Status:** COMPLETED ✅ (Redesigned to match screenshot)
+
+- [x] Create AchievementsView.swift with 5 achievement cards (circular design)
+- [x] Add @EnvironmentObject for AppManager and AppCoordinator
+- [x] Add BackButton → .mainMenu for navigation
+- [x] Create title "Achievements" with matching frame design
+- [x] Add energy display (top-right) with icon and total energy
+- [x] Implement 5 achievement cards in HStack grid layout:
+  - [x] Achievement icon (100x100 with yellow border ring)
+  - [x] Yellow circle background (120x120) with 4px stroke
+  - [x] Title text (bold, centered, 2-line max)
+  - [x] Status button ("Collected" orange or "Locked" gray)
+  - [x] Visual feedback (opacity on icons, color on status)
+- [x] Proper styling with s_frame background for achievements grid
+- [x] Horizontal scrollable layout for 5 achievements in one row
+- [x] Achievement completion status with color feedback
+- [x] Integrate into ContentView navigation
+
+**Features Added:**
+- Achievement card circle component with circular icon design
+- Yellow bordered circles (120x120) matching screenshot design
+- Status badges showing "Collected" (orange) or "Locked" (gray)
+- Energy display in top-right corner
+- Disabled/grayed appearance for incomplete achievements
+- HStack layout with horizontal scrolling for 5 achievements
+- Responsive grid matching Achievements.png screenshot
+- Consistent UI styling with existing screens
+
+**UI Design Matches:**
+- 5 circular achievement icons in a single row
+- Yellow/gold borders around each achievement
+- Title names below each icon
+- Status buttons at bottom of each card
+- All contained in s_frame (smaller frame for grid layout)
+- Volcano theme with red and gold colors
+
+**Files Modified:**
+- AchievementsView.swift (complete redesign with circular cards)
+
+---
+
+## 📋 NEXT STEPS - STAGE 14
+
+**STAGE 14**: Artifacts Screen [NEXT]
+- Create ArtifactsView.swift with 2x5 artifact grid
+- Tap to show lore overlay modal
+- Grayscale filter for locked items
+- Energy display
 
 ---
 
 ## 📊 Summary
 
-**Stages Completed**: 1-12 ✅  
-**Files Modified This Session**: 2 (UpgradesView.swift - new, ContentView.swift - integration)
-**Total Views/Screens**: 5 implemented + 2 placeholder screens remaining
-**Status**: Background shop complete! Ready for STAGE 13 (Achievements Screen)
+**Stages Completed**: 1-13 ✅  
+**Files Modified This Session**: 2 (AchievementsView.swift - new, ContentView.swift - integration)
+**Total Views/Screens**: 6 implemented + 1 placeholder screen remaining
+**Status**: Achievements screen complete! Ready for STAGE 14 (Artifacts Screen)
 **No Errors**: ✅ All files compile without linter errors
 
 ---
 
-## 🎯 CHECKPOINT: STAGE 11 COMPLETE
+## 🎯 CHECKPOINT: STAGE 13 COMPLETE
 
 **What's Working:**
 - ✅ Full rotation animation with spring physics
@@ -278,6 +321,7 @@ VulcanoInfernos/
 - ✅ Navigation between screens
 - ✅ Background selection and persistence
 - ✅ Upgrades shop with visual feedback
+- ✅ Achievements screen with status display
 
 **Game Mechanics Verified:**
 - Ring rotation with alternating directions (CW/CCW)
@@ -286,19 +330,15 @@ VulcanoInfernos/
 - Energy rewards: 2→10, 3→50, 4→150, 5→500
 - Level unlock system
 - Background unlock by level
+- Achievement tracking and completion
 
 ---
 
 ## 📋 REMAINING STAGES (For Next Session)
 
-**STAGE 13**: Achievements Screen [NEXT]
-- Display 5 achievements with progress
-- Locked/completed states
-- Energy display
-
-**STAGE 14**: Artifacts Screen
+**STAGE 14**: Artifacts Screen [NEXT]
 - 2x5 grid of artifact cards
-- Tap to show lore overlay
+- Tap to show lore overlay modal
 - Grayscale for locked items
 
 **STAGE 15**: Settings Screen
@@ -309,4 +349,4 @@ VulcanoInfernos/
 
 ---
 
-**Last Updated:** STAGE 12 complete - Upgrades Screen (Background Shop) fully functional with selection persistence
+**Last Updated:** STAGE 13 complete - Achievements Screen fully functional with achievement tracking and status display

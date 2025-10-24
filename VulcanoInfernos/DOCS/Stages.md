@@ -290,20 +290,21 @@
 ---
 
 ## STAGE 13: Achievements Screen
+
 **Goal:** Display achievement list with progress
 
-- [ ] Create `AchievementsView.swift`
-- [ ] Add @EnvironmentObject for AppManager
-- [ ] Add BackButton → .mainMenu
-- [ ] Add title "Achievements"
-- [ ] Add energy display (top-right)
-- [ ] Create HStack:
-  - [ ] ForEach achievements
-  - [ ] CardView for each:
-    - [ ] Icon (Circle with SF Symbol placeholder)
-    - [ ] Title (bold)
-    - [ ] Description
-    - [ ] Status: "Collected" or progress text
+- [x] Create `AchievementsView.swift`
+- [x] Add @EnvironmentObject for AppManager
+- [x] Add BackButton → .mainMenu
+- [x] Add title "Achievements"
+- [x] Add energy display (top-right)
+- [x] Create HStack:
+  - [x] ForEach achievements
+  - [x] CardView for each:
+    - [x] Icon (Circle with SF Symbol placeholder)
+    - [x] Title (bold)
+    - [x] Description
+    - [x] Status: "Collected" or progress text
 
 ---
 
