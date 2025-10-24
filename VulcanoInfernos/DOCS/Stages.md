@@ -311,51 +311,51 @@
 ## STAGE 14: Artifacts Screen
 **Goal:** Build artifact gallery with lore overlay
 
-- [ ] Create `ArtifactsView.swift`
-- [ ] Add @EnvironmentObject for AppManager
-- [ ] Add BackButton → .mainMenu
-- [ ] Add title "Artifacts"
-- [ ] Add energy display + bar (top-right)
-- [ ] Create LazyVGrid (5 columns x 2 rows):
-  - [ ] ForEach artifacts
-  - [ ] CardView for each:
-    - [ ] Artifact image (placeholder)
-    - [ ] Artifact name below
-    - [ ] Grayscale if locked
-    - [ ] Lock icon if locked
-- [ ] Add @State for selectedArtifact: Artifact?
-- [ ] Implement tap action → set selectedArtifact
-- [ ] Create overlay ZStack:
-  - [ ] Semi-transparent black background
-  - [ ] Modal CardView with:
-    - [ ] Large artifact image
-    - [ ] Artifact name
-    - [ ] Legend text
-    - [ ] Add tap to close action
-- [ ] Show overlay when selectedArtifact != nil
+- [x] Create `ArtifactsView.swift`
+- [x] Add @EnvironmentObject for AppManager and AppCoordinator
+- [x] Add BackButton → .mainMenu
+- [x] Add title "Artifacts"
+- [x] Add energy display + bar (top-right)
+- [x] Create LazyVGrid (5 columns x 2 rows):
+  - [x] ForEach artifacts
+  - [x] CardView for each:
+    - [x] Artifact image (placeholder)
+    - [x] Artifact name below
+    - [x] Grayscale if locked
+    - [x] Lock icon if locked
+- [x] Add @State for selectedArtifact: Artifact?
+- [x] Implement tap action → set selectedArtifact
+- [x] Create overlay ZStack:
+  - [x] Semi-transparent black background
+  - [x] Modal CardView with:
+    - [x] Large artifact image
+    - [x] Artifact name
+    - [x] Legend text
+    - [x] Add tap to close action
+- [x] Show overlay when selectedArtifact != nil
 
 ---
 
 ## STAGE 15: Settings Screen
 **Goal:** Build settings with sound/music toggles and reset
 
-- [ ] Create `SettingsView.swift`
-- [ ] Add @EnvironmentObject for AppManager
-- [ ] Add BackButton → .mainMenu
-- [ ] Add title "Settings"
-- [ ] Add @State for soundEnabled: Bool
-- [ ] Add @State for musicEnabled: Bool
-- [ ] Create CardView with:
-  - [ ] ToggleRow "Sounds" → soundEnabled
-  - [ ] ToggleRow "Music" → musicEnabled
-  - [ ] "Reset Progress" button with confirmation
-- [ ] Add @State for showResetAlert: Bool
-- [ ] Implement alert:
-  - [ ] Title: "Reset Progress?"
-  - [ ] Message: "This will delete all progress. Continue?"
-  - [ ] Buttons: "Cancel" | "Reset" (destructive)
-- [ ] On confirm → call `appManager.resetProgress()`
-- [ ] Test: Verify reset clears all progress
+- [x] Create `SettingsView.swift`
+- [x] Add @EnvironmentObject for AppManager and AppCoordinator
+- [x] Add BackButton → .mainMenu
+- [x] Add title "Settings"
+- [x] Add @State for soundEnabled: Bool
+- [x] Add @State for musicEnabled: Bool
+- [x] Create VStack with:
+  - [x] ToggleRow "Sounds" → soundEnabled
+  - [x] ToggleRow "Music" → musicEnabled
+  - [x] "Reset Progress" button with confirmation
+- [x] Add @State for showResetAlert: Bool
+- [x] Implement ResetProgressAlert component:
+  - [x] Title: "Reset Progress?"
+  - [x] Message: "This will delete all progress. Continue?"
+  - [x] Buttons: "Cancel" | "Reset" (destructive)
+- [x] On confirm → call `appManager.resetProgress()`
+- [x] Test: Verify reset clears all progress ✓
 
 ---
 

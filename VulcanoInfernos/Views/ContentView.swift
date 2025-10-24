@@ -19,11 +19,9 @@ struct ContentView: View {
             case .achievements:
                 AchievementsView()
             case .artifacts:
-                Text("Artifacts Screen")
-                    .foregroundStyle(.white)
+                ArtifactsView()
             case .settings:
-                Text("Settings Screen")
-                    .foregroundStyle(.white)
+                SettingsView()
             }
         }
     }

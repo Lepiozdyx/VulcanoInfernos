@@ -288,27 +288,71 @@ VulcanoInfernos/
 
 ---
 
-## 📋 NEXT STEPS - STAGE 14
+## ✅ STAGE 14: Artifacts Screen
 
-**STAGE 14**: Artifacts Screen [NEXT]
-- Create ArtifactsView.swift with 2x5 artifact grid
-- Tap to show lore overlay modal
-- Grayscale filter for locked items
-- Energy display
+**Status:** COMPLETED ✅
+
+- [x] Create ArtifactsView.swift with 5x2 artifact grid
+- [x] Add @EnvironmentObject for AppManager and AppCoordinator
+- [x] Add BackButton → .mainMenu for navigation
+- [x] Create title "Artifacts" with matching frame design
+- [x] Add energy display (top-right) with icon and total energy
+- [x] Implement LazyVGrid (5 columns x 2 rows):
+  - [x] ForEach artifacts with proper grid layout
+  - [x] ArtifactCard component for each item
+  - [x] Artifact image with proper scaling
+  - [x] Artifact name below image (2-line max)
+  - [x] Grayscale filter applied to locked items
+  - [x] Lock icon + energy requirement shown for locked
+- [x] Add @State for selectedArtifact: Artifact?
+- [x] Implement tap action to set selectedArtifact
+- [x] Create ArtifactLoreOverlay ZStack component:
+  - [x] Semi-transparent black background (0.7 opacity)
+  - [x] Modal with large artifact image
+  - [x] Artifact name in bold
+  - [x] Legend text (lore description, 5-line max)
+  - [x] Close button (X icon) in top-right
+  - [x] Tap outside to close action
+- [x] Show overlay conditionally when selectedArtifact != nil
+- [x] Integrate into ContentView navigation
+- [x] All components compile without errors ✓
+
+**Features Added:**
+- 5x2 grid layout for 10 artifact cards
+- Artifact card component with image, name, and lock status
+- Grayscale visual effect for locked items
+- Energy requirement display on locked cards
+- Lore modal overlay with artifact details
+- Smooth overlay open/close animation
+- Proper state management with @State
+
+**Visual Design:**
+- Consistent styling with existing screens (menuBg, lFrame)
+- Artifact cards in grid with rounded corners
+- Lock icons and energy text for locked items
+- Semi-transparent overlay for lore modal
+- White text on dark background
+- Responsive layout
+
+**Files Created:**
+- ArtifactsView.swift (main view + ArtifactCard + ArtifactLoreOverlay components)
+
+**Files Modified:**
+- ContentView.swift (replaced placeholder with ArtifactsView component)
 
 ---
 
 ## 📊 Summary
 
-**Stages Completed**: 1-13 ✅  
-**Files Modified This Session**: 2 (AchievementsView.swift - new, ContentView.swift - integration)
-**Total Views/Screens**: 6 implemented + 1 placeholder screen remaining
-**Status**: Achievements screen complete! Ready for STAGE 14 (Artifacts Screen)
+**Stages Completed**: 1-15 ✅  
+**Files Modified This Session**: 2 (SettingsView.swift - new, ContentView.swift - integration)
+**Total Views/Screens**: 8 implemented (ALL MAIN SCREENS COMPLETE!)
+**Status**: Settings screen complete! All major screens are now functional!
 **No Errors**: ✅ All files compile without linter errors
 
 ---
 
-## 🎯 CHECKPOINT: STAGE 13 COMPLETE
+## 🎯 CHECKPOINT: STAGE 15 COMPLETE
 
 **What's Working:**
 - ✅ Full rotation animation with spring physics
@@ -318,10 +362,23 @@ VulcanoInfernos/
 - ✅ Win overlay with next level info
 - ✅ Ring initialization with random angles
 - ✅ All 5 rings render correctly with proper scaling
-- ✅ Navigation between screens
+- ✅ Navigation between all screens
 - ✅ Background selection and persistence
 - ✅ Upgrades shop with visual feedback
 - ✅ Achievements screen with status display
+- ✅ Artifacts gallery with lore modal overlay
+- ✅ Artifact unlock/lock system with grayscale display
+- ✅ Settings screen with toggles and reset function
+- ✅ Reset progress with confirmation dialog
+
+**All Main Screens Implemented:**
+1. ✅ Main Menu
+2. ✅ Level Select
+3. ✅ Game Screen
+4. ✅ Upgrades (Backgrounds)
+5. ✅ Achievements
+6. ✅ Artifacts
+7. ✅ Settings
 
 **Game Mechanics Verified:**
 - Ring rotation with alternating directions (CW/CCW)
@@ -331,22 +388,26 @@ VulcanoInfernos/
 - Level unlock system
 - Background unlock by level
 - Achievement tracking and completion
+- Artifact unlock by energy milestone
+- Progress reset with full state clearing
 
 ---
 
 ## 📋 REMAINING STAGES (For Next Session)
 
-**STAGE 14**: Artifacts Screen [NEXT]
-- 2x5 grid of artifact cards
-- Tap to show lore overlay modal
-- Grayscale for locked items
+**STAGE 16**: Audio System [NEXT]
+- AudioManager setup
+- Background music and sound effects
+- Settings integration with audio controls
 
-**STAGE 15**: Settings Screen
-- Sound/Music toggles
-- Reset Progress button with confirmation
+**STAGE 17**: Polish & Animations
+- Haptic feedback
+- Fine-tune animation timings
 
-**STAGE 16-18**: Audio, Polish, Testing & Optimization
+**STAGE 18**: Testing & Bug Fixes
+- Comprehensive testing
+- Performance optimization
 
 ---
 
-**Last Updated:** STAGE 13 complete - Achievements Screen fully functional with achievement tracking and status display
+**Last Updated:** STAGE 15 complete - Settings Screen fully functional with progress reset capability. ALL MAJOR SCREENS NOW COMPLETE! 🎉
