@@ -26,9 +26,9 @@ struct SettingsView: View {
                 Spacer()
             }
             
-            Image(.lFrame)
+            Image(.sFrame)
                 .resizable()
-                .frame(width: 600, height: 270)
+                .frame(width: 300, height: 270)
                 .overlay(alignment: .top) {
                     Image(.button)
                         .resizable()
@@ -41,14 +41,14 @@ struct SettingsView: View {
                         .offset(y: -35)
                 }
                 .overlay {
-                    VStack(spacing: 20) {
+                    VStack {
                         ToggleRow(
-                            label: "Sounds", systemIcon: "circle.fill",
+                            label: "Sounds",
                             isOn: $soundEnabled
                         )
                         
                         ToggleRow(
-                            label: "Music", systemIcon: "circle",
+                            label: "Music",
                             isOn: $musicEnabled
                         )
                         
@@ -59,11 +59,11 @@ struct SettingsView: View {
                         }) {
                             Image(.button)
                                 .resizable()
-                                .frame(width: 160, height: 48)
+                                .frame(width: 150, height: 50)
                                 .overlay {
                                     Text("Reset Progress")
                                         .font(.system(size: 12, weight: .bold))
-                                        .foregroundStyle(.red)
+                                        .foregroundStyle(.white)
                                 }
                         }
                     }

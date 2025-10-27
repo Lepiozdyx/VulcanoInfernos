@@ -18,18 +18,6 @@ struct ArtifactsView: View {
                     }
                     
                     Spacer()
-                    
-                    HStack(spacing: 8) {
-                        Image(.energy)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                        
-                        Text("\(appManager.totalEnergy)")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.white)
-                    }
-                    .padding(.trailing)
                 }
                 .padding()
                 
@@ -38,7 +26,7 @@ struct ArtifactsView: View {
             
             Image(.lFrame)
                 .resizable()
-                .frame(width: 600, height: 300)
+                .frame(width: 600, height: 270)
                 .overlay(alignment: .top) {
                     Image(.button)
                         .resizable()
@@ -51,19 +39,17 @@ struct ArtifactsView: View {
                         .offset(y: -35)
                 }
                 .overlay {
-                    ScrollView {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 5), spacing: 12) {
-                            ForEach(appManager.artifacts) { artifact in
-                                ArtifactCard(
-                                    artifact: artifact,
-                                    onTap: {
-                                        selectedArtifact = artifact
-                                    }
-                                )
-                            }
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 5), spacing: 4) {
+                        ForEach(appManager.artifacts) { artifact in
+                            ArtifactCard(
+                                artifact: artifact,
+                                onTap: {
+                                    selectedArtifact = artifact
+                                }
+                            )
                         }
-                        .padding(16)
                     }
+                    .padding()
                 }
             
             if let artifact = selectedArtifact {
@@ -83,13 +69,20 @@ struct ArtifactCard: View {
     
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 6) {
+            VStack(spacing: 2) {
                 Image(artifact.imageName)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 80)
-                    .opacity(artifact.isUnlocked ? 1.0 : 0.4)
+                    .frame(height: 60)
                     .grayscale(artifact.isUnlocked ? 0 : 1)
+                    .overlay {
+                        if !artifact.isUnlocked {
+                            Image(.lock)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 25)
+                        }
+                    }
                 
                 Text(artifact.name)
                     .font(.system(size: 10, weight: .semibold))
@@ -97,24 +90,13 @@ struct ArtifactCard: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .frame(height: 24)
-                
-                if !artifact.isUnlocked {
-                    HStack(spacing: 2) {
-                        Image(.lock)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 8, height: 8)
-                        
-                        Text("\(artifact.energyRequired)")
-                            .font(.system(size: 8, weight: .bold))
-                            .foregroundStyle(.white)
-                    }
-                }
             }
-            .frame(maxWidth: .infinity)
-            .padding(6)
-            .background(Color.black.opacity(0.3))
-            .cornerRadius(8)
+            .padding(.vertical, 12)
+            .padding(.horizontal)
+            .background(
+                Image(.xsFrame)
+                    .resizable()
+            )
         }
         .opacity(artifact.isUnlocked ? 1.0 : 0.7)
     }
@@ -134,41 +116,49 @@ struct ArtifactLoreOverlay: View {
                     onClose()
                 }
             
-            VStack(spacing: 16) {
-                HStack {
-                    Spacer()
-                    
+            Image(.lFrame)
+                .resizable()
+                .frame(width: 370, height: 270)
+                .overlay {
+                    VStack(spacing: 16) {
+                        Image(artifact.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                        
+                        Text(artifact.name)
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.white)
+                        
+                        Text(artifact.legend)
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(5)
+                            .frame(maxWidth: 250)
+                        
+                        if !artifact.isUnlocked {
+                            HStack(spacing: 2) {
+                                Image(systemName: "bolt.fill")
+                                    .resizable()
+                                    .foregroundStyle(.yellow)
+                                    .frame(width: 15, height: 20)
+                                
+                                Text("\(artifact.energyRequired) to unlock")
+                                    .font(.system(size: 12, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                    }
+                }
+                .overlay(alignment: .topTrailing) {
                     Button(action: onClose) {
                         Image(.x)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 24, height: 24)
+                            .frame(width: 30, height: 30)
                     }
                 }
-                .padding()
-                
-                Image(artifact.imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 120)
-                
-                Text(artifact.name)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                
-                Text(artifact.legend)
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(5)
-                    .frame(maxWidth: 250)
-                
-                Spacer()
-            }
-            .padding(20)
-            .background(Color.black.opacity(0.9))
-            .cornerRadius(12)
-            .frame(maxWidth: 300)
         }
     }
 }
