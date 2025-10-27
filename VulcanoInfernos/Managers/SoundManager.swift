@@ -36,12 +36,16 @@ class SoundManager: ObservableObject {
     private let defaults = UserDefaults.standard
     private var audioPlayer: AVAudioPlayer?
     private var soundPlayer: AVAudioPlayer?
+    private var movingStonePlayer: AVAudioPlayer?
+    private var winSoundPlayer: AVAudioPlayer?
     
     private let soundKey = "appsound"
     private let musicKey = "appmusic"
     
     private let buttonSoundName = "click"
     private let musicName = "music"
+    private let movingStoneSoundName = "movingstone"
+    private let winSoundName = "win"
     
     private init() {
         self.isSoundOn = true
@@ -62,6 +66,8 @@ class SoundManager: ObservableObject {
         setupAudio()
         fetchMusic()
         fetchSound()
+        fetchMovingStoneSound()
+        fetchWinSound()
     }
     
     func toggleSound() {
@@ -77,6 +83,18 @@ class SoundManager: ObservableObject {
     
     func play() {
         guard isSoundOn, let player = soundPlayer else { return }
+        player.currentTime = 0
+        player.play()
+    }
+    
+    func playMovingStoneSound() {
+        guard isSoundOn, let player = movingStonePlayer else { return }
+        player.currentTime = 0
+        player.play()
+    }
+    
+    func playWinSound() {
+        guard isSoundOn, let player = winSoundPlayer else { return }
         player.currentTime = 0
         player.play()
     }
@@ -123,6 +141,34 @@ class SoundManager: ObservableObject {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.numberOfLoops = -1
             audioPlayer?.prepareToPlay()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func fetchMovingStoneSound() {
+        guard let url = Bundle.main.url(
+            forResource: movingStoneSoundName,
+            withExtension: "wav"
+        ) else { return }
+        
+        do {
+            movingStonePlayer = try AVAudioPlayer(contentsOf: url)
+            movingStonePlayer?.prepareToPlay()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func fetchWinSound() {
+        guard let url = Bundle.main.url(
+            forResource: winSoundName,
+            withExtension: "wav"
+        ) else { return }
+        
+        do {
+            winSoundPlayer = try AVAudioPlayer(contentsOf: url)
+            winSoundPlayer?.prepareToPlay()
         } catch {
             print(error.localizedDescription)
         }

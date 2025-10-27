@@ -3,6 +3,7 @@ import SwiftUI
 struct GameView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @EnvironmentObject var appManager: AppManager
+    @ObservedObject private var sound = SoundManager.shared
     @State private var rings: [Ring] = []
     @State private var isSpinning = false
     @State private var sessionEnergy = 0
@@ -203,6 +204,7 @@ struct GameView: View {
     }
     
     private func spinRings() {
+        sound.playMovingStoneSound()
         isSpinning = true
         var animationTasks: [Task<Void, Never>] = []
         
@@ -235,6 +237,7 @@ struct GameView: View {
         matchResult = result
         
         if result.totalEnergy > 0 {
+            sound.playWinSound()
             sessionEnergy += result.totalEnergy
             appManager.addEnergy(result.totalEnergy)
             

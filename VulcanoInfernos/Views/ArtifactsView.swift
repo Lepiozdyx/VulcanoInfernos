@@ -67,7 +67,10 @@ struct ArtifactCard: View {
     let onTap: () -> Void
     
     var body: some View {
-        Button(action: onTap) {
+        Button(action: {
+            SoundManager.shared.play()
+            onTap()
+        }) {
             Image(.xsFrame)
                 .resizable()
                 .frame(width: 100, height: 110)
@@ -109,6 +112,7 @@ struct ArtifactLoreOverlay: View {
             Color.black.opacity(0.7)
                 .ignoresSafeArea()
                 .onTapGesture {
+                    SoundManager.shared.play()
                     onClose()
                 }
             
@@ -144,7 +148,10 @@ struct ArtifactLoreOverlay: View {
                     }
                 }
                 .overlay(alignment: .topTrailing) {
-                    Button(action: onClose) {
+                    Button(action: {
+                        SoundManager.shared.play()
+                        onClose()
+                    }) {
                         Image(.x)
                             .resizable()
                             .scaledToFit()

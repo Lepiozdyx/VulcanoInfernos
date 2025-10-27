@@ -15,6 +15,7 @@ struct CircleButton<Content: View>: View {
     var body: some View {
         Button {
             guard isEnabled else { return }
+            SoundManager.shared.play()
             withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                 isPressed = true
             }

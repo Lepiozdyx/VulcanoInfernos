@@ -7,6 +7,7 @@ struct PrimaryButton: View {
     
     var body: some View {
         Button {
+            SoundManager.shared.play()
             withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
                 isPressed = true
             }

@@ -73,7 +73,10 @@ struct BackgroundCard: View {
             .frame(width: 125, height: 200)
             .opacity(background.isUnlocked ? 1.0 : 0.5)
             .overlay(alignment: .bottom) {
-                Button(action: action) {
+                Button(action: {
+                    SoundManager.shared.play()
+                    action()
+                }) {
                     Image(.button)
                         .resizable()
                         .frame(width: 105, height: 40)
