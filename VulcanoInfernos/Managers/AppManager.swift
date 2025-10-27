@@ -52,16 +52,16 @@ class AppManager: ObservableObject {
     
     private func initializeArtifacts() {
         let artifactData: [(name: String, legend: String, energy: Int, image: String)] = [
-            ("Ember Heart", "Burns with eternal flames, granting warmth to all who seek it.", 1000, "art_Ember_Hearts"),
-            ("Mask of the Molten King", "Ancient relic of a forgotten ruler, carved from obsidian and magma.", 3000, "art_Mask_Molten_King"),
-            ("Crystal of Eternal Flame", "A precious gem that holds the essence of the volcano's heart.", 6000, "art_Crystal_Eternal_Flame"),
-            ("Ashen Feather", "Fallen from the skies during the great eruption, light yet unbreakable.", 10000, "art_Ashen_Feather"),
-            ("Stone of Whispers", "Ancient stone that carries the voices of the volcano's past.", 15000, "art_Stone_Whispers"),
-            ("Core Fragment", "A piece of the volcano's core, radiating immense power.", 22000, "art_Core_Fragment"),
-            ("Rune of Flow", "Mystical rune that guides the flow of molten rivers.", 30000, "art_Rune_Flow"),
-            ("Molten Skull", "Guardian of the deep, protecting the secrets of the earth.", 40000, "art_Molten_Skull"),
-            ("Tear of Magma", "A crystallized tear from the volcano, precious beyond measure.", 52000, "art_Tear_Magma"),
-            ("Titan's Fang", "The ultimate treasure, a fang from the titan of the volcano itself.", 65000, "art_Titan_Fang")
+            ("Ember Heart", "Burns with eternal flames, granting warmth to all who seek it.", 100, "art_Ember_Hearts"),
+            ("Mask of the Molten King", "Ancient relic of a forgotten ruler, carved from obsidian and magma.", 300, "art_Mask_Molten_King"),
+            ("Crystal of Eternal Flame", "A precious gem that holds the essence of the volcano's heart.", 600, "art_Crystal_Eternal_Flame"),
+            ("Ashen Feather", "Fallen from the skies during the great eruption, light yet unbreakable.", 1000, "art_Ashen_Feather"),
+            ("Stone of Whispers", "Ancient stone that carries the voices of the volcano's past.", 1500, "art_Stone_Whispers"),
+            ("Core Fragment", "A piece of the volcano's core, radiating immense power.", 2200, "art_Core_Fragment"),
+            ("Rune of Flow", "Mystical rune that guides the flow of molten rivers.", 3000, "art_Rune_Flow"),
+            ("Molten Skull", "Guardian of the deep, protecting the secrets of the earth.", 4000, "art_Molten_Skull"),
+            ("Tear of Magma", "A crystallized tear from the volcano, precious beyond measure.", 5200, "art_Tear_Magma"),
+            ("Titan's Fang", "The ultimate treasure, a fang from the titan of the volcano itself.", 6500, "art_Titan_Fang")
         ]
         
         artifacts = artifactData.enumerated().map { index, data in
