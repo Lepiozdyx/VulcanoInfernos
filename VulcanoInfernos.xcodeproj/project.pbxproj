@@ -10,9 +10,22 @@
 		FA64C4432EA9182D003B7061 /* VulcanoInfernos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VulcanoInfernos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FADCD7EA2EAFA31100CA162C /* Exceptions for "VulcanoInfernos" folder in "VulcanoInfernos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA64C4422EA9182D003B7061 /* VulcanoInfernos */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FA64C4452EA9182D003B7061 /* VulcanoInfernos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FADCD7EA2EAFA31100CA162C /* Exceptions for "VulcanoInfernos" folder in "VulcanoInfernos" target */,
+			);
 			path = VulcanoInfernos;
 			sourceTree = "<group>";
 		};
@@ -253,6 +266,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VulcanoInfernos/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vulcano Infernos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -290,6 +304,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VulcanoInfernos/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vulcano Infernos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

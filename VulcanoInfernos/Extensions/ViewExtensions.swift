@@ -25,3 +25,21 @@ struct ShakeModifier: ViewModifier {
             }
     }
 }
+
+extension Text {
+    func titanFont(
+        _ size: CGFloat,
+        color: Color = .white,
+        textAlignment: TextAlignment = .center,
+        font: String = "TitanOne"
+    ) -> some View {
+        let baseFont = UIFont(name: font, size: size) ?? UIFont.systemFont(ofSize: size, weight: .regular)
+        
+        let scaledFont = UIFontMetrics(forTextStyle: .headline).scaledFont(for: baseFont)
+
+        return self
+            .font(Font(scaledFont))
+            .foregroundStyle(color)
+            .multilineTextAlignment(textAlignment)
+    }
+}
