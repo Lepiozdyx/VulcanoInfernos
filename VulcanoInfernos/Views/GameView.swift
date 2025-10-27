@@ -6,10 +6,9 @@ struct GameView: View {
     @State private var rings: [Ring] = []
     @State private var isSpinning = false
     @State private var sessionEnergy = 0
-    @State private var matchCount = 0
+    @State private var matchResult: MatchResult?
     @State private var showWinOverlay = false
     @State private var showMissOverlay = false
-    @State private var earnedEnergy = 0
     
     let levelId: Int
     
@@ -93,6 +92,15 @@ struct GameView: View {
             }
             .padding()
             
+            VStack(spacing: 0) {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(.yellow.opacity(0.4))
+                    .frame(width: 10, height: 130)
+                
+                Spacer()
+            }
+            .padding(.top, 20)
+            
             ZStack {
                 if !rings.isEmpty {
                     ForEach(rings) { ring in
@@ -137,7 +145,7 @@ struct GameView: View {
                 }
             }
             
-            if showWinOverlay && matchCount >= 2 {
+            if showWinOverlay, let result = matchResult, result.totalEnergy > 0 {
                 HStack {
                     VStack(spacing: 16) {
                         Text("MATCH!")
@@ -146,7 +154,7 @@ struct GameView: View {
                             .shadow(color: .orange, radius: 10)
 
                         HStack {
-                            Text("+\(earnedEnergy)")
+                            Text("+\(result.totalEnergy)")
                                 .font(.system(size: 28, weight: .bold))
                                 .foregroundStyle(.yellow)
                                 .shadow(color: .orange, radius: 10)
@@ -156,6 +164,14 @@ struct GameView: View {
                                 .frame(width: 24, height: 30)
                                 .foregroundStyle(.yellow)
                                 .shadow(color: .orange, radius: 10)
+                        }
+                        
+                        if result.multiplier > 1 {
+                            Image(.X_2)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 50)
+                                .rotationEffect(Angle(degrees: 25))
                         }
                     }
                     .rotationEffect(Angle(degrees: -25))
@@ -201,14 +217,15 @@ struct GameView: View {
         for (index, _) in rings.enumerated() {
             let task = Task {
                 let ring = rings[index]
-                let randomRotation = Double.random(in: ring.minRotation...ring.maxRotation)
-                let rotation = randomRotation * Double(ring.rotationDirection)
+                let rotation = GameLogic.calculateRotation(for: ring)
                 
                 withAnimation(.interpolatingSpring(stiffness: 50, damping: 10)) {
                     rings[index].currentAngle += rotation
                 }
                 
                 try? await Task.sleep(nanoseconds: UInt64(ring.animationDuration * 1_000_000_000))
+                
+                rings[index].currentAngle = GameLogic.snapToNearestSegment(angle: rings[index].currentAngle)
             }
             animationTasks.append(task)
         }
@@ -220,15 +237,14 @@ struct GameView: View {
     }
     
     private func detectAndAwardEnergy() {
-        let detected = GameLogic.detectMatches(rings: rings)
-        matchCount = detected
+        GameLogic.alignAllRings(&rings)
         
-        let earned = GameLogic.calculateEnergy(matchCount: detected)
-        earnedEnergy = earned
+        let result = GameLogic.detectMatches(rings: rings)
+        matchResult = result
         
-        if earned > 0 {
-            sessionEnergy += earned
-            appManager.addEnergy(earned)
+        if result.totalEnergy > 0 {
+            sessionEnergy += result.totalEnergy
+            appManager.addEnergy(result.totalEnergy)
             
             showWinOverlay = true
             

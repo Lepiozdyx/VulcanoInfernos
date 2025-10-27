@@ -1,12 +1,14 @@
 import Foundation
 
+struct MatchResult {
+    let groups: [Int]
+    let totalEnergy: Int
+    let multiplier: Int
+}
+
 class GameLogic {
     
     // MARK: - Rune Sequence
-    // Fixed rune order for ring.png (clockwise from 12 o'clock)
-    // Position 0 = 12 o'clock (0°)
-    // Position 1 = 1 o'clock (30°)
-    // ... continuing clockwise
     static let runeSequence = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     
     // MARK: - Initialize Rings
@@ -20,11 +22,13 @@ class GameLogic {
             (id: 5, scale: 0.41, minRot: 720, maxRot: 1440, duration: 2.0, direction: 1)
         ]
         
+        let possibleAngles = [0.0, 30.0, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0, 300.0, 330.0]
+        
         return configs.map { config in
             Ring(
                 id: config.id,
                 scale: config.scale,
-                currentAngle: Double.random(in: 0..<360),
+                currentAngle: possibleAngles.randomElement() ?? 0.0,
                 runeSequence: runeSequence,
                 minRotation: Double(config.minRot),
                 maxRotation: Double(config.maxRot),
@@ -34,55 +38,92 @@ class GameLogic {
         }
     }
     
+    // MARK: - Rotation Logic
+    
+    static func calculateRotation(for ring: Ring) -> Double {
+        let minSegments = Int(ring.minRotation / 30.0)
+        let maxSegments = Int(ring.maxRotation / 30.0)
+        let randomSegments = Int.random(in: minSegments...maxSegments)
+        let rotation = Double(randomSegments) * 30.0 * Double(ring.rotationDirection)
+        return rotation
+    }
+    
+    // MARK: - Angle Alignment
+    
+    static func snapToNearestSegment(angle: Double) -> Double {
+        let segmentAngle = 30.0
+        let normalized = angle.truncatingRemainder(dividingBy: 360)
+        let adjusted = normalized < 0 ? normalized + 360 : normalized
+        let segmentIndex = round(adjusted / segmentAngle)
+        let snapped = segmentIndex * segmentAngle
+        return snapped.truncatingRemainder(dividingBy: 360)
+    }
+    
+    static func alignAllRings(_ rings: inout [Ring]) {
+        for i in 0..<rings.count {
+            rings[i].currentAngle = snapToNearestSegment(angle: rings[i].currentAngle)
+        }
+    }
+    
     // MARK: - Match Detection
     
     static func getRuneAtTop(ring: Ring) -> Int {
-        // Normalize angle to 0-360 range
-        let normalized = ring.currentAngle.truncatingRemainder(dividingBy: 360)
-        let adjusted = normalized < 0 ? normalized + 360 : normalized
-        
-        // Calculate which segment (0-11) is at top
-        // Each segment spans 30° (360° / 12)
-        let segmentIndex = Int(round(adjusted / 30.0)) % 12
-        
-        // Return the rune ID at this position
+        let aligned = snapToNearestSegment(angle: ring.currentAngle)
+        let segmentIndex = Int(aligned / 30.0) % 12
         return ring.runeSequence[segmentIndex]
     }
     
-    static func detectMatches(rings: [Ring]) -> Int {
+    static func detectMatches(rings: [Ring]) -> MatchResult {
         let runesAtTop = rings.map { getRuneAtTop(ring: $0) }
+        var groups: [Int] = []
+        var i = 0
         
-        var matchCount = 1
-        let firstRune = runesAtTop[0]
-        
-        // Count consecutive matches starting from Ring 1
-        for i in 1..<runesAtTop.count {
-            if runesAtTop[i] == firstRune {
-                matchCount += 1
-            } else {
-                break
+        while i < runesAtTop.count {
+            var groupSize = 1
+            let currentRune = runesAtTop[i]
+            
+            for j in (i + 1)..<runesAtTop.count {
+                if runesAtTop[j] == currentRune {
+                    groupSize += 1
+                } else {
+                    break
+                }
             }
+            
+            if groupSize >= 2 {
+                groups.append(groupSize)
+            }
+            
+            i += groupSize
         }
         
-        return matchCount >= 2 ? matchCount : 0
+        let totalEnergy = calculateEnergy(groups: groups)
+        let multiplier = groups.count >= 2 ? 2 : 1
+        
+        return MatchResult(groups: groups, totalEnergy: totalEnergy, multiplier: multiplier)
     }
     
     // MARK: - Energy Calculation
     
-    static func calculateEnergy(matchCount: Int) -> Int {
-        switch matchCount {
-        case 0...1:
-            return 0
-        case 2:
-            return 10
-        case 3:
-            return 50
-        case 4:
-            return 150
-        case 5:
-            return 500
-        default:
-            return 0
+    private static func calculateEnergy(groups: [Int]) -> Int {
+        var baseEnergy = 0
+        
+        for groupSize in groups {
+            switch groupSize {
+            case 2:
+                baseEnergy += 10
+            case 3:
+                baseEnergy += 30
+            case 4:
+                baseEnergy += 40
+            case 5:
+                baseEnergy += 100
+            default:
+                break
+            }
         }
+        
+        let multiplier = groups.count >= 2 ? 2 : 1
+        return baseEnergy * multiplier
     }
 }
