@@ -93,6 +93,10 @@ class SoundManager: ObservableObject {
         player.play()
     }
     
+    func stopMovingStoneSound() {
+        movingStonePlayer?.pause()
+    }
+    
     func playWinSound() {
         guard isSoundOn, let player = winSoundPlayer else { return }
         player.currentTime = 0

@@ -225,6 +225,7 @@ struct GameView: View {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+            sound.stopMovingStoneSound()
             detectAndAwardEnergy()
             isSpinning = false
         }
