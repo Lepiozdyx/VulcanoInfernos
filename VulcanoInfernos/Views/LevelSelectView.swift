@@ -63,8 +63,7 @@ struct LevelSelectView: View {
                             .frame(width: 250, height: 60)
                             .overlay {
                                 Text("Level Select")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .foregroundStyle(.white)
+                                    .titanFont(18)
                             }
                             .offset(y: -35)
                     }
@@ -75,12 +74,12 @@ struct LevelSelectView: View {
                                     content: {
                                         if level.isUnlocked {
                                             Text("\(level.id)")
-                                                .font(.system(size: 18, weight: .bold))
-                                                .foregroundStyle(.white)
+                                                .titanFont(18)
                                         } else {
-                                            Image(systemName: "lock.fill")
-                                                .font(.system(size: 16))
-                                                .foregroundStyle(.gray)
+                                            Image(.lock)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(height: 20)
                                         }
                                     },
                                     isEnabled: level.isUnlocked,

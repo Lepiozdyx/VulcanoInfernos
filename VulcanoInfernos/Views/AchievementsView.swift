@@ -32,8 +32,7 @@ struct AchievementsView: View {
                         .frame(width: 250, height: 60)
                         .overlay {
                             Text("Achievements")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(.white)
+                                .titanFont(18)
                         }
                         .offset(y: -35)
                 }
@@ -74,11 +73,7 @@ struct AchievementCardCircle: View {
                         .opacity(achievement.isCompleted ? 1.0 : 0.5)
                     
                     Text(achievement.title)
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(.white)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .titanFont(12, textAlignment: .center)
                         .frame(width: 90)
                     
                     Spacer()
@@ -88,8 +83,7 @@ struct AchievementCardCircle: View {
                         .frame(width: 90, height: 32)
                         .overlay {
                             Text(statusText)
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundStyle(statusColor)
+                                .titanFont(10, color: statusColor)
                         }
                         .opacity(achievement.isCompleted ? 1.0 : 0.5)
                 }

@@ -5,7 +5,6 @@ struct MainMenuView: View {
     
     var body: some View {
         ZStack {
-            // Background
             Image(.menuBg)
                 .resizable()
                 .ignoresSafeArea()
@@ -62,10 +61,6 @@ struct MainMenuView: View {
                     )
                 }
             }
-        }
-        .onAppear {
-            // Audio initialization placeholder
-            // AudioManager.shared.playBackgroundMusic()
         }
     }
 }

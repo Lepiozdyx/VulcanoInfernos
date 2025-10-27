@@ -2,18 +2,24 @@ import SwiftUI
 
 struct ToggleRow: View {
     let label: String
-    @Binding var isOn: Bool
+    let isOn: Bool
+    let action: () -> Void
     
     var body: some View {
         HStack(spacing: 16) {
             Text(label)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.white)
+                .titanFont(18)
             
             Spacer()
             
-            Toggle("", isOn: $isOn)
-                .tint(Color(red: 1.0, green: 0.4, blue: 0.1))
+            Button(action: action) {
+                Image(isOn ? .check : .x)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 40)
+                    .animation(.default, value: isOn)
+            }
+            .buttonStyle(.plain)
         }
         .padding()
     }
@@ -21,9 +27,9 @@ struct ToggleRow: View {
 
 #Preview {
     VStack(spacing: 0) {
-        ToggleRow(label: "Sounds", isOn: .constant(true))
+        ToggleRow(label: "Sounds", isOn: true, action: {})
 
-        ToggleRow(label: "Music", isOn: .constant(false))
+        ToggleRow(label: "Music", isOn: false, action: {})
     }
     .background(.gray)
     .padding()

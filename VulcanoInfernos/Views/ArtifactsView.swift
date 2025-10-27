@@ -33,8 +33,7 @@ struct ArtifactsView: View {
                         .frame(width: 250, height: 60)
                         .overlay {
                             Text("Artifacts")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(.white)
+                                .titanFont(18)
                         }
                         .offset(y: -35)
                 }
@@ -69,34 +68,31 @@ struct ArtifactCard: View {
     
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 2) {
-                Image(artifact.imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 60)
-                    .grayscale(artifact.isUnlocked ? 0 : 1)
-                    .overlay {
-                        if !artifact.isUnlocked {
-                            Image(.lock)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 25)
-                        }
+            Image(.xsFrame)
+                .resizable()
+                .frame(width: 100, height: 110)
+                .overlay {
+                    VStack(spacing: 2) {
+                        Image(artifact.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 60)
+                            .grayscale(artifact.isUnlocked ? 0 : 1)
+                            .overlay {
+                                if !artifact.isUnlocked {
+                                    Image(.lock)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 25)
+                                }
+                            }
+                        
+                        Text(artifact.name)
+                            .titanFont(10, textAlignment: .center)
+                            .frame(height: 24)
                     }
-                
-                Text(artifact.name)
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .frame(height: 24)
-            }
-            .padding(.vertical, 12)
-            .padding(.horizontal)
-            .background(
-                Image(.xsFrame)
-                    .resizable()
-            )
+                    .padding(10)
+                }
         }
         .opacity(artifact.isUnlocked ? 1.0 : 0.7)
     }
@@ -127,13 +123,10 @@ struct ArtifactLoreOverlay: View {
                             .frame(height: 100)
                         
                         Text(artifact.name)
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundStyle(.white)
+                            .titanFont(18)
                         
                         Text(artifact.legend)
-                            .font(.system(size: 12, weight: .regular))
-                            .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
+                            .titanFont(12, textAlignment: .center)
                             .lineLimit(5)
                             .frame(maxWidth: 250)
                         
@@ -145,8 +138,7 @@ struct ArtifactLoreOverlay: View {
                                     .frame(width: 15, height: 20)
                                 
                                 Text("\(artifact.energyRequired) to unlock")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundStyle(.white)
+                                    .titanFont(12)
                             }
                         }
                     }

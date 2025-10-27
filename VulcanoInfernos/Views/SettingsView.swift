@@ -3,6 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     @EnvironmentObject var appManager: AppManager
+    @ObservedObject private var sound = SoundManager.shared
+    
     @State private var soundEnabled: Bool = true
     @State private var musicEnabled: Bool = true
     @State private var showResetAlert: Bool = false
@@ -35,8 +37,7 @@ struct SettingsView: View {
                         .frame(width: 250, height: 60)
                         .overlay {
                             Text("Settings")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(.white)
+                                .titanFont(18)
                         }
                         .offset(y: -35)
                 }
@@ -44,13 +45,15 @@ struct SettingsView: View {
                     VStack {
                         ToggleRow(
                             label: "Sounds",
-                            isOn: $soundEnabled
-                        )
+                            isOn: sound.isSoundOn) {
+                                sound.toggleSound()
+                            }
                         
                         ToggleRow(
                             label: "Music",
-                            isOn: $musicEnabled
-                        )
+                            isOn: sound.isMusicOn) {
+                                sound.toggleMusic()
+                            }
                         
                         Spacer()
                         
@@ -61,9 +64,8 @@ struct SettingsView: View {
                                 .resizable()
                                 .frame(width: 150, height: 50)
                                 .overlay {
-                                    Text("Reset Progress")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundStyle(.white)
+                                    Text("Reset progress")
+                                        .titanFont(12)
                                 }
                         }
                     }
@@ -99,13 +101,10 @@ struct ResetProgressAlert: View {
             
             VStack(spacing: 20) {
                 Text("Reset Progress?")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
+                    .titanFont(16)
                 
                 Text("This will delete all progress. Continue?")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
+                    .titanFont(12, textAlignment: .center)
                 
                 HStack(spacing: 12) {
                     Button(action: {
@@ -116,8 +115,7 @@ struct ResetProgressAlert: View {
                             .frame(width: 110, height: 40)
                             .overlay {
                                 Text("Cancel")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundStyle(.white)
+                                    .titanFont(12)
                             }
                     }
                     
@@ -127,14 +125,13 @@ struct ResetProgressAlert: View {
                             .frame(width: 110, height: 40)
                             .overlay {
                                 Text("Reset")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundStyle(.red)
+                                    .titanFont(12, color: .yellow)
                             }
                     }
                 }
             }
             .padding(24)
-            .background(Color.black.opacity(0.9))
+            .background(Color.black.opacity(0.7))
             .cornerRadius(12)
             .frame(maxWidth: 300)
         }

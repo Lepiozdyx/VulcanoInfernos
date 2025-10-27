@@ -1,7 +1,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.scenePhase) private var phase
     @EnvironmentObject var appCoordinator: AppCoordinator
+    
+    @ObservedObject private var sound = SoundManager.shared
     
     var body: some View {
         ZStack {
@@ -22,6 +25,23 @@ struct ContentView: View {
                 ArtifactsView()
             case .settings:
                 SettingsView()
+            }
+        }
+        .onAppear {
+            OrientationManager.shared.lockLandscape()
+            if sound.isMusicOn {
+                sound.playMusic()
+            }
+        }
+        .onChange(of: phase) { state in
+            switch state {
+            case .active:
+                OrientationManager.shared.lockLandscape()
+                sound.playMusic()
+            case .background, .inactive:
+                sound.stopMusic()
+            @unknown default:
+                break
             }
         }
     }

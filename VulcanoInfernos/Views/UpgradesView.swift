@@ -32,8 +32,7 @@ struct UpgradesView: View {
                         .frame(width: 250, height: 60)
                         .overlay {
                             Text("Upgrades")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(.white)
+                                .titanFont(18)
                         }
                         .offset(y: -35)
                 }
@@ -80,8 +79,7 @@ struct BackgroundCard: View {
                         .frame(width: 105, height: 40)
                         .overlay {
                             Text(buttonTitle)
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundStyle(isSelected ? .orange : .white)
+                                .titanFont(12, color: isSelected ? .yellow : .white)
                         }
                         .padding(.bottom, 6)
                 }

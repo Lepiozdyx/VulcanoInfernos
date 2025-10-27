@@ -23,8 +23,7 @@ struct PrimaryButton: View {
                 .scaleEffect(isPressed ? 0.9 : 1.0)
                 .overlay {
                     Text(title)
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(.white)
+                        .titanFont(18)
                 }
         }
     }

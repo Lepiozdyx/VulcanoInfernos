@@ -107,22 +107,17 @@ struct GameView: View {
                         RingView(ring: ring).opacity(0.8)
                     }
                 } else {
-                    Circle()
-                        .stroke(Color.orange.opacity(0.3), lineWidth: 2)
-                        .frame(height: 200)
-                    
                     VStack(spacing: 12) {
-                        Image(systemName: "rings")
-                            .font(.system(size: 40))
-                            .foregroundStyle(.orange)
+                        Image(.ring)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 80)
                         
                         Text("Level \(levelId)")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.white)
+                            .titanFont(18)
                         
                         Text("Loading rings...")
-                            .font(.caption)
-                            .foregroundStyle(.gray)
+                            .titanFont(10)
                     }
                 }
             }
@@ -149,21 +144,19 @@ struct GameView: View {
                 HStack {
                     VStack(spacing: 16) {
                         Text("MATCH!")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundStyle(.yellow)
-                            .shadow(color: .orange, radius: 10)
+                            .titanFont(28, color: .yellow)
+                            .shadow(color: .yellow, radius: 5)
 
                         HStack {
                             Text("+\(result.totalEnergy)")
-                                .font(.system(size: 28, weight: .bold))
-                                .foregroundStyle(.yellow)
-                                .shadow(color: .orange, radius: 10)
+                                .titanFont(28, color: .yellow)
+                                .shadow(color: .yellow, radius: 5)
                             
                             Image(systemName: "bolt.fill")
                                 .resizable()
                                 .frame(width: 24, height: 30)
                                 .foregroundStyle(.yellow)
-                                .shadow(color: .orange, radius: 10)
+                                .shadow(color: .yellow, radius: 5)
                         }
                         
                         if result.multiplier > 1 {
@@ -188,9 +181,8 @@ struct GameView: View {
                     Spacer()
                     
                     Text("MISS")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(.red)
-                        .shadow(color: .red.opacity(0.5), radius: 8)
+                        .titanFont(24, color: .red)
+                        .shadow(color: .red.opacity(0.5), radius: 5)
                         .scaleEffect(showMissOverlay ? 1.0 : 0.5)
                         .opacity(showMissOverlay ? 1.0 : 0.0)
                         .offset(y: showMissOverlay ? 0 : 30)
