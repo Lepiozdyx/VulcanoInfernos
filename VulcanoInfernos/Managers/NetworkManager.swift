@@ -6,7 +6,7 @@ import FirebaseMessaging
 
 class NetworkManager: ObservableObject {
     @Published private(set) var targetURL: URL?
-    static let infernoURL = "https://vulcaninfern.com/client"
+    static let infernoURL = "https://vulcaninfern.com/logs"
     private let storage: UserDefaults
     private var didSaveURL = false
     private let requestTimeout: TimeInterval = 5.0
