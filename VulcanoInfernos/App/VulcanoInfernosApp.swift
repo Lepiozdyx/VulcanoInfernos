@@ -3,14 +3,11 @@ import Combine
 
 @main
 struct VulcanoInfernosApp: App {
-    @StateObject private var appCoordinator = AppCoordinator()
-    @StateObject private var appManager = AppManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(appCoordinator)
-                .environmentObject(appManager)
+            AppStateView()
         }
     }
 }

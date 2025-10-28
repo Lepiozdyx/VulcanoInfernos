@@ -8,8 +8,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            
             switch appCoordinator.currentScreen {
             case .mainMenu:
                 MainMenuView()
