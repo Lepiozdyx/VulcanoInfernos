@@ -27,6 +27,7 @@ struct AppStateView: View {
                 }
             case .final:
                 ContentView()
+                    .preferredColorScheme(.light)
                     .environmentObject(appCoordinator)
                     .environmentObject(appManager)
             }

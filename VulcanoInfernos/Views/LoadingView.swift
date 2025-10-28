@@ -14,45 +14,48 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [.blue, .purple],
+                colors: [.b1, .b2],
                 startPoint: .top,
                 endPoint: .bottom
             ).ignoresSafeArea()
             
-            VStack {
+            VStack(spacing: -30) {
                 Image(.logo)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 250)
-                    .overlay(alignment: .bottom) {
-                        VStack(spacing: -50) {
-                            Image(.logo)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 250)
-                            
-                            Text("Stay Powered. Stay Focused.")
-                                .titanFont(12)
-                        }
-                        .offset(y: 50)
-                    }
-                    .offset(y: -100)
+                    .frame(width: 160)
+                
+                Image(.loadingTitle)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 220)
+            }
+            
+            VStack {
+                Spacer()
                 
                 Capsule()
-                    .foregroundStyle(.black.opacity(0.4))
+                    .foregroundStyle(.gray.opacity(0.4))
                     .frame(maxWidth: 200, maxHeight: 17)
+                    .overlay {
+                        Capsule()
+                            .stroke(.b1, lineWidth: 1.5)
+                    }
                     .overlay(alignment: .leading) {
                         Capsule()
-                            .foregroundStyle(.yellow)
+                            .foregroundStyle(.white)
                             .frame(width: 198 * loading, height: 15)
                             .padding(.horizontal, 1)
-                            .shadow(color: .yellow, radius: 3)
+                    }
+                    .overlay {
+                        Text("Loading")
+                            .titanFont(10, color: .b2)
                     }
             }
             .padding()
         }
         .onAppear {
-            withAnimation(.linear(duration: 2.5)) {
+            withAnimation(.linear(duration: 5)) {
                 loading = 1
             }
         }
