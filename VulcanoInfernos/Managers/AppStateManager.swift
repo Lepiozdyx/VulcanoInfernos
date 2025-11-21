@@ -3,72 +3,43 @@ import Combine
 
 @MainActor
 final class AppStateManager: ObservableObject {
-    enum AppState {
-        case fetch
+    
+    enum States {
+        case request
         case support
-        case final
+        case loading
     }
     
-    @Published private(set) var appState: AppState = .fetch
-    let webManager: NetworkManager
+    @Published private(set) var appState: States = .request
+    let networkManager: NetworkManager
     
-    private var timeoutTask: Task<Void, Never>?
-    private let maxLoadingTime: TimeInterval = 8.0
-    
-    init(webManager: NetworkManager) {
-        self.webManager = webManager
+    init(networkManager: NetworkManager) {
+        self.networkManager = networkManager
     }
     
     convenience init() {
-        self.init(webManager: NetworkManager())
+        self.init(networkManager: NetworkManager())
     }
     
-    func stateCheck() {
-        timeoutTask?.cancel()
-        
+    func stateRequest() {
         Task { @MainActor in
             do {
-                if webManager.targetURL != nil {
-                    updateState(.support)
+                if networkManager.gameURL != nil {
+                    appState = .support
                     return
                 }
                 
-                let shouldShowWebView = try await webManager.checkInitialURL()
+                let shouldShowWebView = try await networkManager.checkInitialURL()
                 
                 if shouldShowWebView {
-                    updateState(.support)
+                    appState = .support
                 } else {
-                    updateState(.final)
+                    appState = .loading
                 }
-            } catch {
-                updateState(.final)
-            }
-        }
-        
-        startTimeoutTask()
-    }
-    
-    private func updateState(_ newState: AppState) {
-        timeoutTask?.cancel()
-        timeoutTask = nil
-        appState = newState
-    }
-    
-    private func startTimeoutTask() {
-        timeoutTask = Task { @MainActor in
-            do {
-                try await Task.sleep(nanoseconds: UInt64(maxLoadingTime * 1_000_000_000))
                 
-                if self.appState == .fetch {
-                    self.appState = .final
-                }
             } catch {
-                print("Timeout task cancelled")
+                appState = .loading
             }
         }
-    }
-    
-    deinit {
-        timeoutTask?.cancel()
     }
 }

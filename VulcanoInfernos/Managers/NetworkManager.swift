@@ -1,51 +1,18 @@
-import UIKit
-import SwiftUI
 import Combine
-import FirebaseMessaging
+import SwiftUI
 @preconcurrency import WebKit
 
 class NetworkManager: ObservableObject {
-    @Published private(set) var targetURL: URL?
-    static let infernoURL = "https://vulcaninfern.com/logs"
+    @Published private(set) var gameURL: URL?
+    
+    static let initialURL = URL(string: "https://vulcaninfern.com/logs")!
     private let storage: UserDefaults
     private var didSaveURL = false
-    private let requestTimeout: TimeInterval = 5.0
+    private let requestTimeout: TimeInterval = 10.0
     
     init(storage: UserDefaults = .standard) {
         self.storage = storage
-        loadProvenURL()
-    }
-    
-    static func isInitialURL(_ url: URL) -> Bool {
-        guard let baseURL = URL(string: infernoURL),
-              url.host == baseURL.host,
-              url.path == baseURL.path else {
-            return false
-        }
-        return true
-    }
-    
-    static func getInitialURL(fcmToken: String) -> URL {
-        guard var components = URLComponents(string: infernoURL) else {
-            fatalError("Invalid BASE_URL: \(infernoURL)")
-        }
-        
-        var queryItems = components.queryItems ?? []
-        queryItems.append(URLQueryItem(name: "fcm", value: fcmToken))
-        components.queryItems = queryItems
-        
-        guard let url = components.url else {
-            fatalError("Failed to create URL with FCM token")
-        }
-        
-        return url
-    }
-    
-    static var initialURL: URL {
-        guard let url = URL(string: infernoURL) else {
-            fatalError("Invalid BASE_URL: \(infernoURL)")
-        }
-        return url
+        loadGameURL()
     }
     
     func checkURL(_ url: URL) {
@@ -58,17 +25,17 @@ class NetworkManager: ObservableObject {
         }
         
         storage.set(url.absoluteString, forKey: "savedurl")
-        targetURL = url
+        gameURL = url
         didSaveURL = true
     }
     
-    private func loadProvenURL() {
+    private func loadGameURL() {
         if let urlString = storage.string(forKey: "savedurl") {
             if let url = URL(string: urlString) {
-                targetURL = url
+                gameURL = url
                 didSaveURL = true
             } else {
-                print("Error: load - \(urlString)")
+                print("Error: \(urlString)")
             }
         }
     }
@@ -84,16 +51,12 @@ class NetworkManager: ObservableObject {
     }
     
     func checkInitialURL() async throws -> Bool {
-        let fcmToken = await FCMManager.shared.waitForToken()
-        let initialURL = Self.getInitialURL(fcmToken: fcmToken)
-        
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = requestTimeout
         configuration.timeoutIntervalForResource = requestTimeout
-        
         let session = URLSession(configuration: configuration)
         
-        var request = URLRequest(url: initialURL)
+        var request = URLRequest(url: Self.initialURL)
         request.setValue(getUAgent(forWebView: false), forHTTPHeaderField: "User-Agent")
         request.timeoutInterval = requestTimeout
         
@@ -107,11 +70,10 @@ class NetworkManager: ObservableObject {
             if (400...599).contains(httpResponse.statusCode) {
                 return false
             }
-
+            
             return true
             
         } catch {
-            print("Network error: \(error.localizedDescription)")
             throw error
         }
     }
@@ -128,7 +90,26 @@ class NetworkManager: ObservableObject {
     }
 }
 
-struct WebViewManager: UIViewRepresentable {
+struct WKWebViewManager: UIViewRepresentable {
+    class Coordinator: NSObject, WKNavigationDelegate {
+        var parent: WKWebViewManager
+        
+        init(_ parent: WKWebViewManager) {
+            self.parent = parent
+            super.init()
+        }
+        
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            guard let finalURL = webView.url else {
+                return
+            }
+            
+            if finalURL != NetworkManager.initialURL {
+                parent.webManager.checkURL(finalURL)
+            } else {}
+        }
+    }
+    
     let url: URL
     let webManager: NetworkManager
     
@@ -156,51 +137,5 @@ struct WebViewManager: UIViewRepresentable {
     func updateUIView(_ webView: WKWebView, context: Context) {
         let request = URLRequest(url: url)
         webView.load(request)
-    }
-    
-    class Coordinator: NSObject, WKNavigationDelegate {
-        var parent: WebViewManager
-        
-        init(_ parent: WebViewManager) {
-            self.parent = parent
-            super.init()
-        }
-        
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            guard let finalURL = webView.url else {
-                return
-            }
-            
-            if !NetworkManager.isInitialURL(finalURL) {
-                parent.webManager.checkURL(finalURL)
-            } else {
-                print("WebView: Still on initial URL")
-            }
-        }
-    }
-}
-
-class FCMManager: ObservableObject {
-    static let shared = FCMManager()
-    
-    @Published private(set) var fcmToken: String?
-    private var continuation: CheckedContinuation<String, Never>?
-    
-    private init() {}
-    
-    func setToken(_ token: String) {
-        self.fcmToken = token
-        continuation?.resume(returning: token)
-        continuation = nil
-    }
-    
-    func waitForToken() async -> String {
-        if let existingToken = fcmToken {
-            return existingToken
-        }
-        
-        return await withCheckedContinuation { continuation in
-            self.continuation = continuation
-        }
     }
 }

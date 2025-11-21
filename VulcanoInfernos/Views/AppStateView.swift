@@ -3,29 +3,28 @@ import SwiftUI
 struct AppStateView: View {
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var appManager = AppManager()
-    @StateObject private var state = AppStateManager()
-    @StateObject private var fcmManager = FCMManager.shared
+    @StateObject private var manager = AppStateManager()
         
     var body: some View {
         Group {
-            switch state.appState {
-            case .fetch:
+            switch manager.appState {
+            case .request:
                 LoadingView()
+                
             case .support:
-                if let url = state.webManager.targetURL {
-                    WebViewManager(url: url, webManager: state.webManager)
-                } else if let fcmToken = fcmManager.fcmToken {
-                    WebViewManager(
-                        url: NetworkManager.getInitialURL(fcmToken: fcmToken),
-                        webManager: state.webManager
+                if let url = manager.networkManager.gameURL {
+                    WKWebViewManager(
+                        url: url,
+                        webManager: manager.networkManager
                     )
                 } else {
-                    WebViewManager(
+                    WKWebViewManager(
                         url: NetworkManager.initialURL,
-                        webManager: state.webManager
+                        webManager: manager.networkManager
                     )
                 }
-            case .final:
+                
+            case .loading:
                 ContentView()
                     .preferredColorScheme(.light)
                     .environmentObject(appCoordinator)
@@ -33,11 +32,12 @@ struct AppStateView: View {
             }
         }
         .onAppear {
-            state.stateCheck()
+            manager.stateRequest()
         }
     }
 }
 
 #Preview {
-    AppStateView()
+    ContentView()
+        .environmentObject(AppCoordinator())
 }
